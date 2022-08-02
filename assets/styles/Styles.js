@@ -49,6 +49,24 @@ export const inputGroup = StyleSheet.create({
     }
 });
 
+export const buttons = StyleSheet.create({
+    backgroundColor: Colors.whiteColor,
+    flexDirection: 'column',
+    borderTopRightRadius: Dims.borderradius,
+    borderTopLeftRadius: Dims.borderradius,
+});
+
+export const button = StyleSheet.create({
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+});
+
+export const modal = StyleSheet.create({
+    justifyContent: 'flex-end',
+    margin: 0,
+});
+
 export const btn = StyleSheet.create({ width: "100%", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" })
 
 export const cel = StyleSheet.create({ 

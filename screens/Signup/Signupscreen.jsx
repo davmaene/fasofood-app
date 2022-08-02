@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { View, Text, TextInput, TouchableHighlight, ScrollView, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableHighlight, ScrollView, SafeAreaView } from 'react-native';
 import { Colors } from '../../assets/colors/Colors';
 import { Dims } from '../../assets/dimensions/Dimemensions';
 import { Footer } from '../../components/Footer/comp.footer';
 import { Header } from '../../components/Header/comp.header';
-import { AntDesign, Entypo, Feather, FontAwesome, MaterialIcons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { inputGroup } from '../../assets/styles/Styles';
+import { AntDesign, Entypo, Feather, FontAwesome, MaterialIcons, FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { button, inputGroup, modal } from '../../assets/styles/Styles';
 import { Divider } from 'react-native-paper';
 import { onRunExternalRQST } from '../../services/communications';
 import { Dropdown } from 'react-native-element-dropdown';
 import Toast from 'react-native-toast-message';
+import Modal from 'react-native-modal';
+import * as ImagePicker from 'expo-image-picker';
 
 export const SignupScreen = ({ navigation, route }) => {
 
@@ -21,6 +23,7 @@ export const SignupScreen = ({ navigation, route }) => {
     const [genders, setgeders] = React.useState([]);
     const [hosps, sethops] = React.useState([]);
     const [temp, settemp] = React.useState([]);
+    const [isVisible, setisVisible] = React.useState(false);
 
     const loadHospitals = async () => {
         await onRunExternalRQST({
@@ -39,6 +42,69 @@ export const SignupScreen = ({ navigation, route }) => {
             }
         })
     };
+
+    const onImageLibraryPress = async () => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+              const { status } = await ImagePicker.requestCameraPermissionsAsync();
+              if (status !== 'granted') {
+                return;
+              }
+            }
+        })();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+        
+        if(result.cancelled) {
+
+          return;
+        }
+    
+        let localUri = result.uri;
+        let filename = localUri.split('/').pop();
+      
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+        setisVisible(false)
+        seturi({ uri: localUri, name: filename, type });
+    }
+    
+    const onCameraPress = async () => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+              const { status } = await ImagePicker.requestCameraPermissionsAsync();
+              if (status !== 'granted') {
+                return;
+              }
+            }
+        })();
+
+        let res = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            storageOptions: {
+                skipBackup: false,
+                path: 'images',
+            }
+        });
+        if(res.cancelled){
+          return;
+        } 
+    
+        let localUri = res.uri;
+        let filename = localUri.split('/').pop();
+      
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+        setisVisible(false)
+        seturi({ uri: localUri, name: filename, type });
+    }
 
     const onSubmit = async () => {
         if(1){
@@ -126,6 +192,7 @@ export const SignupScreen = ({ navigation, route }) => {
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
                                 <TouchableHighlight 
                                     underlayColor={ Colors.whiteColor }
+                                    onPress={() => setisVisible(true)}
                                     style={{ width: "100%", flexDirection: "row", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}
                                 >
                                     <>
@@ -134,50 +201,6 @@ export const SignupScreen = ({ navigation, route }) => {
                                     </>
                                 </TouchableHighlight>
                             </View>
-                            {/* <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
-                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Genre <Text style={{color: Colors.dangerColor}}>*</Text></Text>
-                                <View style={ inputGroup.container }>
-                                    <View style={ inputGroup.inputcontainer }>
-                                        <Dropdown
-                                            style={[{ width: "100%", paddingRight: 15, marginTop: 0, height: "100%", backgroundColor: Colors.pillColor }]}
-                                            placeholderStyle={{ color: Colors.placeHolderColor, fontFamily: "mons", fontSize: Dims.iputtextsize, paddingLeft: 25 }}
-                                            containerStyle={{}}
-                                            selectedTextStyle={{ color: Colors.primaryColor, fontFamily: "mons", paddingLeft: 25, fontSize: Dims.iputtextsize }}
-                                            inputSearchStyle={{ backgroundColor: Colors.pillColor, height: 45, width: "95%", paddingLeft: 5, fontFamily: "mons", fontSize: Dims.iputtextsize }}
-                                            // iconStyle={styles.iconStyle}
-                                            data={genders}
-                                            // search
-                                            maxHeight={ 200 }
-                                            labelField="value"
-                                            valueField="id"
-                                            placeholder={!isFocusg ? 'Séléctionner le genre' : '...'}
-                                            searchPlaceholder="Recherche ..."
-                                            value={gender}
-                                            onFocus={() => setIsFocus(true)}
-                                            onBlur={() => setIsFocus(false)}
-                                            onChange={item => {
-                                                setgender(item.value);
-                                                setIsFocusg(false);
-                                            }}
-                                        />
-                                    </View>
-                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                        <MaterialCommunityIcons name="gender-male-female" size={Dims.iconsize} color={ Colors.whiteColor } />
-                                    </View>
-                                </View>
-                            </View> */}
-                            {/* <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
-                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Age <Text style={{color: Colors.dangerColor}}>*</Text></Text>
-                                <View style={ inputGroup.container }>
-                                    <View style={ inputGroup.inputcontainer }>
-                                        <TextInput placeholder="Tappe l'âge ici " style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
-                                    </View>
-                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                        <MaterialIcons name="verified-user" size={ Dims.iconsize } color={ Colors.whiteColor } />
-                                    </View>
-                                </View>
-                            </View> */}
-                            {/* -------------------------- */}
                             <Divider style={{ marginTop: 25 }} />
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 10 }}>
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Mot de passe <Text style={{color: Colors.dangerColor}}>*</Text></Text>
@@ -235,6 +258,34 @@ export const SignupScreen = ({ navigation, route }) => {
                                 </TouchableHighlight>
                             </View>
                         </View>
+                        <Modal
+                isVisible={isVisible}
+                onBackButtonPress={() => { setisVisible(false) }}
+                onBackdropPress={() => { setisVisible(false) }}
+                style={[modal, { position: "absolute", bottom: 0, width: "100%", backgroundColor: Colors.whiteColor, borderTopRightRadius: Dims.borderradius, borderTopStartRadius: Dims.borderradius }]}>
+                <SafeAreaView style={[button, { paddingVertical: 15 }]}>
+                    <View style={{ width: "90%", flexDirection: "row", justifyContent: "space-between", alignSelf: "center" }}>
+                        <TouchableHighlight 
+                            underlayColor={Colors.primaryColor} 
+                            style={[button, { paddingVertical: 10, borderRadius: Dims.borderradius, backgroundColor: Colors.pillColor, width: "25%" }]} onPress={onImageLibraryPress}
+                        >
+                            <>
+                                <Ionicons name="images" size={ Dims.iconsize } color={ Colors.primaryColor } />
+                                <Text style={{ fontFamily: "mons", color: Colors.primaryColor }}>Galleries</Text>
+                            </>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            underlayColor={Colors.primaryColor} 
+                            style={[button, { paddingVertical: 10, borderRadius: Dims.borderradius, backgroundColor: Colors.pillColor, width: "25%" }]} onPress={onCameraPress}
+                        >
+                            <>
+                                <Ionicons name="camera" size={ Dims.iconsize } color={ Colors.primaryColor } />
+                                <Text style={{ fontFamily: "mons", color: Colors.primaryColor }}>Camera</Text>
+                            </>
+                        </TouchableHighlight>
+                    </View>
+                </SafeAreaView>
+            </Modal>
                     </View>
                     <Footer/>
                 </ScrollView>

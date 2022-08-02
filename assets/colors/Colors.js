@@ -9,8 +9,8 @@ const placeHolderColor= "#9C9696";
 
 export const Colors = {
     placeHolderColor,
-    primaryColor: secondaryColor,
-    secondaryColor: primaryColor,
+    primaryColor,
+    secondaryColor,
     pillColor,
     successColor,
     dangerColor,
