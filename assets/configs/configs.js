@@ -1,3 +1,3 @@
-export const endpoint =  "http://192.168.1.130:3500";//"https://sos-afia.herokuapp.com" ||
-export const appname = "SOS Afia.";
+export const endpoint =  "https://fastfood-api-v1.herokuapp.com/api/v1"
+export const appname = "FASO Food";
 export const umergencyphonenumber = "0970284772";

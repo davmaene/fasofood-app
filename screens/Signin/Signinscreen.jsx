@@ -136,7 +136,7 @@ export const SigninScreen = ({ navigation, route }) => {
     return(
         <>
             <View style={{flex: 1, backgroundColor: Colors.primaryColor}}>
-                <Header colors={Colors.whiteColor} />
+                    <Header colors={Colors.whiteColor} />
                     <ScrollView 
                         contentContainerStyle={{ paddingBottom: 0, backgroundColor: Colors.primaryColor }}
                         showsHorizontalScrollIndicator={false}
