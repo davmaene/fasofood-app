@@ -24,6 +24,7 @@ export const SignupScreen = ({ navigation, route }) => {
     const [hosps, sethops] = React.useState([]);
     const [temp, settemp] = React.useState([]);
     const [isVisible, setisVisible] = React.useState(false);
+    let [uri, seturi] = React.useState("none");
 
     const loadHospitals = async () => {
         await onRunExternalRQST({
@@ -198,6 +199,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                     <>
                                         <MaterialIcons name="add-photo-alternate" size={Dims.iconsize} color={ Colors.whiteColor } />
                                         <Text style={{ color: Colors.whiteColor, fontFamily: "mons", paddingHorizontal: 10 }}>Photo de profile</Text>
+                                        { uri !== "none" && typeof uri === "object" ? <AntDesign name="checkcircle" size={Dims.iconsize} color={ Colors.whiteColor } /> : <></> }
                                     </>
                                 </TouchableHighlight>
                             </View>
