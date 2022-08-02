@@ -42,7 +42,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                 case 200:
                                     const u = done && done['data'];
                                     onRunInsertQRY({
-                                        table: "__tbl_users",
+                                        table: "__tbl_users_",
                                         columns: `'fsname', 'lsname', 'nickname', 'age', 'gender', 'phone', 'crearedon', 'hospitalref'`,
                                         dot: "?, ?, ?, ?, ?, ?, ?, ?",
                                         values: [`${u['fsname']}`, `${u['lsname']}`, `${u['nickname']}`, `${u['age']}`, `${u['gender']}`, `${u['phone']}`, `${new Date().toLocaleString()}`, `${u['hospitalref']}`]

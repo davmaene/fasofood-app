@@ -21,9 +21,13 @@ export const Recoverpassword = ({ navigation, route }) => {
     const [eye, seteye] = React.useState(true);
     const [output, setoutput] = React.useState("");
     const ref = React.useRef();
+    const [step, setstep] = React.useState(0);
+
 
     const onSubmit = async () => {
         setoutput("");
+        setstep(1)
+        return false;
         if(num.length > 0 && num.length < 10){
             if(password.length > 0){
                 setisloading(true)
@@ -144,57 +148,97 @@ export const Recoverpassword = ({ navigation, route }) => {
                     >
                     <View style={{ borderTopEndRadius: Dims.bigradius, borderTopStartRadius: Dims.bigradius, backgroundColor: Colors.whiteColor, height: Dims.height, marginTop: Dims.smallradius }}>
                         <View style={{width: "85%", alignSelf: "center", marginTop: Dims.bigradius }}>
-                            <View style={{width: "100%", height: 65, flexDirection: "column"}}>
-                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse email</Text>
-                                <View style={[ inputGroup.container, { flexDirection: "row-reverse" } ]}>
-                                    <View style={{ width: "80%", justifyContent: "center", alignContent: "center", alignItems: "center", flexDirection: "row" }}>
-                                        <TextInput placeholder='me@example.fa' maxLength={10} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%" }]} />
-                                    </View>
-                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                        <MaterialIcons name="email" size={Dims.iconsize} color={ Colors.whiteColor } />
-                                    </View>
-                                </View>
-                            </View>
-                            {/* ------------------------ */}
-                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 25}}>
-                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Mot de passe</Text>
-                                <View style={[ inputGroup.container, { flexDirection: "row-reverse" }]}>
-                                    <TouchableHighlight
-                                        underlayColor={Colors.whiteColor}
-                                        onPress={() => seteye(!eye)} 
-                                        style={[ inputGroup.iconcontainer, { backgroundColor: Colors.pillColor }]}
-                                    >
-                                        <Ionicons name={eye ? "eye-off" : "eye"} size={ Dims.iconsize } color={ Colors.primaryColor } />
-                                    </TouchableHighlight>
-                                    <View style={[ inputGroup.inputcontainer, { width: "60%" } ]}>
-                                        <TextInput placeholder='******' secureTextEntry={eye} enablesReturnKeyAutomatically onChangeText={(t) => setpassword(t)} style={[ inputGroup.input, { fontFamily: "mons" } ]} />
-                                    </View>
-                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                        <Entypo name="lock" size={ Dims.iconsize } color={ Colors.whiteColor } />
-                                    </View>
-                                </View>
-                            </View>
-                            {/* ------------------------ */}
-                            <View style={{ width: "100%", height: 65, flexDirection: "column", marginVertical: 25 }}>
-                                <TouchableHighlight 
-                                    onPress={() => {
-                                        onSubmit()
-                                    }}
-                                    disabled={isloading}
-                                    underlayColor={ Colors.primaryColor }
-                                    style={btn}
-                                >
-                                    {isloading 
+                            <>
+                                {step === 0
                                     ?
-                                        <Loader/>
+                                    (
+                                        <>
+                                            <View style={{width: "100%", height: 65, flexDirection: "column"}}>
+                                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse email</Text>
+                                                <View style={[ inputGroup.container, { flexDirection: "row-reverse" } ]}>
+                                                    <View style={{ width: "80%", justifyContent: "center", alignContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                                        <TextInput placeholder='me@example.fa' maxLength={10} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%" }]} />
+                                                    </View>
+                                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
+                                                        <MaterialIcons name="email" size={Dims.iconsize} color={ Colors.whiteColor } />
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <View style={{ width: "100%", height: 65, flexDirection: "column", marginVertical: 25 }}>
+                                                <TouchableHighlight 
+                                                    onPress={() => {
+                                                        onSubmit()
+                                                    }}
+                                                    disabled={isloading}
+                                                    underlayColor={ Colors.primaryColor }
+                                                    style={btn}
+                                                >
+                                                    {isloading 
+                                                    ?
+                                                        <Loader/>
+                                                    :
+                                                        <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Connexion</Text>    
+                                                    }
+                                                </TouchableHighlight>
+                                                <Text style={{fontFamily: "mons", fontSize: Dims.subtitletextsize, marginVertical: 10, color: Colors.dangerColor, textAlign: "center" }}>
+                                                    {output}
+                                                </Text>
+                                            </View>
+                                        </>
+                                    )
                                     :
-                                        <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Connexion</Text>    
-                                    }
-                                </TouchableHighlight>
-                                <Text style={{fontFamily: "mons", fontSize: Dims.subtitletextsize, marginVertical: 10, color: Colors.dangerColor, textAlign: "center" }}>
-                                    {output}
-                                </Text>
-                            </View>
+                                    (
+                                        <></>
+                                    )
+                                }
+                                {step === 1
+                                    ?
+                                    (
+                                        <>
+                                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 25}}>
+                                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Mot de passe</Text>
+                                                <View style={[ inputGroup.container, { flexDirection: "row-reverse" }]}>
+                                                    <TouchableHighlight
+                                                        underlayColor={Colors.whiteColor}
+                                                        onPress={() => seteye(!eye)} 
+                                                        style={[ inputGroup.iconcontainer, { backgroundColor: Colors.pillColor }]}
+                                                    >
+                                                        <Ionicons name={eye ? "eye-off" : "eye"} size={ Dims.iconsize } color={ Colors.primaryColor } />
+                                                    </TouchableHighlight>
+                                                    <View style={[ inputGroup.inputcontainer, { width: "60%" } ]}>
+                                                        <TextInput placeholder='******' secureTextEntry={eye} enablesReturnKeyAutomatically onChangeText={(t) => setpassword(t)} style={[ inputGroup.input, { fontFamily: "mons" } ]} />
+                                                    </View>
+                                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
+                                                        <Entypo name="lock" size={ Dims.iconsize } color={ Colors.whiteColor } />
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 25}}>
+                                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Mot de passe</Text>
+                                                <View style={[ inputGroup.container, { flexDirection: "row-reverse" }]}>
+                                                    <TouchableHighlight
+                                                        underlayColor={Colors.whiteColor}
+                                                        onPress={() => seteye(!eye)} 
+                                                        style={[ inputGroup.iconcontainer, { backgroundColor: Colors.pillColor }]}
+                                                    >
+                                                        <Ionicons name={eye ? "eye-off" : "eye"} size={ Dims.iconsize } color={ Colors.primaryColor } />
+                                                    </TouchableHighlight>
+                                                    <View style={[ inputGroup.inputcontainer, { width: "60%" } ]}>
+                                                        <TextInput placeholder='******' secureTextEntry={eye} enablesReturnKeyAutomatically onChangeText={(t) => setpassword(t)} style={[ inputGroup.input, { fontFamily: "mons" } ]} />
+                                                    </View>
+                                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
+                                                        <Entypo name="lock" size={ Dims.iconsize } color={ Colors.whiteColor } />
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <></>
+                                    )
+                                }
+                            </>
                         </View>
                         <View style={{flexDirection: "row", width: "85%", alignSelf: "center", alignContent: "center", alignItems: "center", justifyContent: "space-between" }}>
                             <View style={{ width: "45%" }}>
@@ -210,16 +254,9 @@ export const Recoverpassword = ({ navigation, route }) => {
                         <View style={{ width: "85%", alignSelf: "center" }}>
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
                                 <TouchableHighlight 
-                                    onPress={() => navigation.navigate("signup")}
+                                    onPress={() => navigation.navigate("signin")}
                                     style={{ width: "100%", backgroundColor: Colors.secondaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Créer un compte</Text>
-                                </TouchableHighlight>
-                            </View>
-                        </View>
-                        <View style={{ width: "85%", alignSelf: "center" }}>
-                            <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 2 }}>
-                                <TouchableHighlight style={{ width: "100%", backgroundColor: Colors.pillColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: Colors.primaryColor, fontFamily: "mons-b" }}>Mot de passe oublié ?</Text>
+                                    <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Connexion avec un autre compte</Text>
                                 </TouchableHighlight>
                             </View>
                         </View>
