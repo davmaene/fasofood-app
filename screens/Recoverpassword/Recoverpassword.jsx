@@ -26,10 +26,8 @@ export const Recoverpassword = ({ navigation, route }) => {
 
     const onSubmit = async () => {
         setoutput("");
-        setstep(1)
-        return false;
         if(num.length > 0 && num.length < 10){
-            if(password.length > 0){
+            // if(password.length > 0){
                 setisloading(true)
                 try {
                     await onRunExternalRQST({
@@ -121,18 +119,18 @@ export const Recoverpassword = ({ navigation, route }) => {
                 } catch (error) {
                     console.log("erreur => ", error);
                 }
-            }else{
-                Toast.show({
-                    type: 'error',
-                    text1: 'Erreur',
-                    text2: 'Entrer le mot de passe',
-                });
-            }
+            // }else{
+            //     Toast.show({
+            //         type: 'error',
+            //         text1: 'Erreur',
+            //         text2: 'Entrer le mot de passe',
+            //     });
+            // }
         }else{
             Toast.show({
                 type: 'error',
                 text1: 'Erreur',
-                text2: 'Entrer un numéro de téléphone valide',
+                text2: 'Entrer une adresse mail valide',
             });
         }
     };
@@ -151,138 +149,65 @@ export const Recoverpassword = ({ navigation, route }) => {
                         showsVerticalScrollIndicator={false}
                     >
                     <View style={{ borderTopEndRadius: Dims.bigradius, borderTopStartRadius: Dims.bigradius, backgroundColor: Colors.whiteColor, height: Dims.height, marginTop: Dims.smallradius }}>
-                        <View style={{width: "85%", alignSelf: "center", marginTop: Dims.bigradius }}>
+                        <View style={{width: "85%", alignSelf: "center", marginTop: 2 }}>
                             <>
-                                {step === 0
-                                    ?
-                                    (
-                                        <>
-                                            <View style={{width: "100%", height: 65, flexDirection: "column"}}>
-                                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse email</Text>
-                                                <View style={[ inputGroup.container, { flexDirection: "row-reverse" } ]}>
-                                                    <View style={{ width: "80%", justifyContent: "center", alignContent: "center", alignItems: "center", flexDirection: "row" }}>
-                                                        <TextInput placeholder='me@example.fa' maxLength={10} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%" }]} />
-                                                    </View>
-                                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                                        <MaterialIcons name="email" size={Dims.iconsize} color={ Colors.whiteColor } />
-                                                    </View>
-                                                </View>
-                                            </View>
-                                            <View style={{ width: "100%", height: 65, flexDirection: "column", marginVertical: 25 }}>
-                                                <TouchableHighlight 
-                                                    onPress={() => {
-                                                        onSubmit()
-                                                    }}
-                                                    disabled={isloading}
-                                                    underlayColor={ Colors.primaryColor }
-                                                    style={btn}
-                                                >
-                                                    {isloading 
-                                                    ?
-                                                        <Loader/>
-                                                    :
-                                                        <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Connexion</Text>    
-                                                    }
-                                                </TouchableHighlight>
-                                                <Text style={{fontFamily: "mons", fontSize: Dims.subtitletextsize, marginVertical: 10, color: Colors.dangerColor, textAlign: "center" }}>
-                                                    {output}
-                                                </Text>
-                                            </View>
-                                            <View style={{flexDirection: "row", width: "85%", alignSelf: "center", alignContent: "center", alignItems: "center", justifyContent: "space-between" }}>
-                                                <View style={{ width: "45%" }}>
-                                                    <Divider/>
-                                                </View>
-                                                <View>
-                                                    <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor }}>OU</Text>
-                                                </View>
-                                                <View style={{ width: "45%" }}>
-                                                    <Divider/>
-                                                </View>
-                                            </View>
-                                            <View style={{ width: "85%", alignSelf: "center" }}>
-                                                <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
-                                                    <TouchableHighlight 
-                                                        onPress={() => navigation.navigate("signin")}
-                                                        style={{ width: "100%", backgroundColor: Colors.secondaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
-                                                        <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Connexion avec un autre compte</Text>
-                                                    </TouchableHighlight>
-                                                </View>
-                                            </View>
-                                        </>
-                                    )
-                                    :
-                                    (
-                                        <></>
-                                    )
-                                }
-                                {step === 1
-                                    ?
-                                    (
-                                        <>
-                                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 25}}>
-                                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Mot de passe</Text>
-                                                <View style={[ inputGroup.container, { flexDirection: "row-reverse" }]}>
-                                                    <TouchableHighlight
-                                                        underlayColor={Colors.whiteColor}
-                                                        onPress={() => seteye(!eye)} 
-                                                        style={[ inputGroup.iconcontainer, { backgroundColor: Colors.pillColor }]}
-                                                    >
-                                                        <Ionicons name={eye ? "eye-off" : "eye"} size={ Dims.iconsize } color={ Colors.primaryColor } />
-                                                    </TouchableHighlight>
-                                                    <View style={[ inputGroup.inputcontainer, { width: "60%" } ]}>
-                                                        <TextInput placeholder='******' secureTextEntry={eye} enablesReturnKeyAutomatically onChangeText={(t) => setpassword(t)} style={[ inputGroup.input, { fontFamily: "mons" } ]} />
-                                                    </View>
-                                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                                        <Entypo name="lock" size={ Dims.iconsize } color={ Colors.whiteColor } />
-                                                    </View>
-                                                </View>
-                                            </View>
-                                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 10}}>
-                                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Mot de passe</Text>
-                                                <View style={[ inputGroup.container, { flexDirection: "row-reverse" }]}>
-                                                    <TouchableHighlight
-                                                        underlayColor={Colors.whiteColor}
-                                                        onPress={() => seteye(!eye)} 
-                                                        style={[ inputGroup.iconcontainer, { backgroundColor: Colors.pillColor }]}
-                                                    >
-                                                        <Ionicons name={eye ? "eye-off" : "eye"} size={ Dims.iconsize } color={ Colors.primaryColor } />
-                                                    </TouchableHighlight>
-                                                    <View style={[ inputGroup.inputcontainer, { width: "60%" } ]}>
-                                                        <TextInput placeholder='******' secureTextEntry={eye} enablesReturnKeyAutomatically onChangeText={(t) => setpassword(t)} style={[ inputGroup.input, { fontFamily: "mons" } ]} />
-                                                    </View>
-                                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                                        <Entypo name="lock" size={ Dims.iconsize } color={ Colors.whiteColor } />
-                                                    </View>
-                                                </View>
-                                            </View>
-                                            <View style={{ width: "100%", height: 65, flexDirection: "column", marginVertical: 25 }}>
-                                                <TouchableHighlight 
-                                                    onPress={() => {
-                                                        onRessetPassword()
-                                                    }}
-                                                    disabled={isloading}
-                                                    underlayColor={ Colors.primaryColor }
-                                                    style={btn}
-                                                >
-                                                    {isloading 
-                                                    ?
-                                                        <Loader/>
-                                                    :
-                                                        <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Confirmer</Text>    
-                                                    }
-                                                </TouchableHighlight>
-                                                <Text style={{fontFamily: "mons", fontSize: Dims.subtitletextsize, marginVertical: 10, color: Colors.dangerColor, textAlign: "center" }}>
-                                                    {output}
-                                                </Text>
-                                            </View>
-                                        </>
-                                    )
-                                    :
-                                    (
-                                        <></>
-                                    )
-                                }
+                                <View style={{ width: "100%", alignSelf: "center", marginTop: Dims.bigradius }}>
+                                    <Text style={{ fontFamily: "mons", fontSize: Dims.bigtitletextsize }}>Réinitialisation mot de passe</Text>
+                                    <Text style={{fontFamily: "mons-e"}}>Entrez l'adresse mail pour continuer, nous vous enverons un code de confirmation à cette adresse et les instructions de réinitialisation de votre mot de passe</Text>
+                                    <Divider style={{ marginVertical: 10 }} />
+                                </View>
+                                <View style={{width: "100%", height: 65, flexDirection: "column"}}>
+                                    <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse email</Text>
+                                    <View style={[ inputGroup.container, { flexDirection: "row-reverse" } ]}>
+                                        <View style={{ width: "80%", justifyContent: "center", alignContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                            <TextInput placeholder='me@example.fa' maxLength={10} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%" }]} />
+                                        </View>
+                                        <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
+                                            <MaterialIcons name="email" size={Dims.iconsize} color={ Colors.whiteColor } />
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={{ width: "100%", height: 65, flexDirection: "column", marginVertical: 25 }}>
+                                    <TouchableHighlight 
+                                        onPress={() => {
+                                            onSubmit()
+                                        }}
+                                        disabled={isloading}
+                                        underlayColor={ Colors.primaryColor }
+                                        style={btn}
+                                    >
+                                        {isloading 
+                                        ?
+                                            <Loader/>
+                                        :
+                                            <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Connexion</Text>    
+                                        }
+                                    </TouchableHighlight>
+                                    <Text style={{fontFamily: "mons", fontSize: Dims.subtitletextsize, marginVertical: 10, color: Colors.dangerColor, textAlign: "center" }}>
+                                        {output}
+                                    </Text>
+                                </View>
                             </>
+                        </View>
+                        <View style={{flexDirection: "row", width: "85%", alignSelf: "center", alignContent: "center", alignItems: "center", justifyContent: "space-between" }}>
+                            <View style={{ width: "45%" }}>
+                                <Divider/>
+                            </View>
+                            <View>
+                                <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor }}>OU</Text>
+                            </View>
+                            <View style={{ width: "45%" }}>
+                                <Divider/>
+                            </View>
+                        </View>
+                        <View style={{ width: "85%", alignSelf: "center" }}>
+                            <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
+                                <TouchableHighlight 
+                                    onPress={() => navigation.navigate("signin")}
+                                    style={{ width: "100%", backgroundColor: Colors.secondaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Connexion avec un autre compte</Text>
+                                </TouchableHighlight>
+                            </View>
                         </View>
                     </View>
                 </ScrollView>

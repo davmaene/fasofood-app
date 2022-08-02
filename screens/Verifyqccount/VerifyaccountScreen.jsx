@@ -50,7 +50,7 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
             }, (er, dn) => {
                 if(dn && dn['status'] === 200){
                     onRunInsertQRY({
-                        table: "__tbl_users",
+                        table: "__tbl_users_",
                         columns: `'fsname', 'lsname', 'nickname', 'age', 'gender', 'phone', 'crearedon', 'hospitalref'`,
                         dot: "?, ?, ?, ?, ?, ?, ?, ?",
                         values: [`${u['fsname']}`, `${u['lsname']}`, `${u['nickname']}`, `${u['age']}`, `${u['gender']}`, `${u['phone']}`, `${new Date().toLocaleString()}`, `${u['hospitalref']}`]
@@ -145,8 +145,8 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
     };
 
     React.useEffect(() => {
-        console.log("Code => ", c);
-        console.log("User => ", u);
+        // console.log("Code => ", c);
+        // console.log("User => ", u);
         onValueFulFil()
     }, [onValueFulFil])
 
