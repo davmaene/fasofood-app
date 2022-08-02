@@ -40,18 +40,29 @@ export const SignupScreen = ({ navigation, route }) => {
         })
     };
 
-    const onSubmit = () => {
-        
+    const onSubmit = async () => {
+        if(1){
+            await onRunExternalRQST({
+                method: "GET",
+                url: "/hospitals/list"
+            }, (err, done) => {
+                if(done && done['status'] === 200){
+                    sethops(done['data'])
+                    settemp(done['data'])
+                }else{
+
+                }
+            })
+        }else{
+            Toast.show({
+                type: 'error',
+                text1: 'Erreur',
+                text2: 'Completer tous les champs avant de continuer !',
+            });
+        }
     };
 
     React.useEffect(() => {
-        setgeders(
-            [
-                { id: "Masculin", value: "Masculin" },
-                { id: "Feminin", value: "Feminin" }
-            ]
-        )
-        loadHospitals()
     }, [])
 
     return(
@@ -90,13 +101,13 @@ export const SignupScreen = ({ navigation, route }) => {
                             </View>
                             {/* -------------------------- */}
                             <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
-                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Prenom </Text>
+                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse mail <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
-                                        <TextInput placeholder='Prenom ...' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                        <TextInput placeholder='Adresse mail ...' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                        <FontAwesome name="user" size={ Dims.iconsize } color={ Colors.whiteColor } />
+                                        <MaterialIcons name="email" size={ Dims.iconsize } color={ Colors.whiteColor } />
                                     </View>
                                 </View>
                             </View>
@@ -112,12 +123,21 @@ export const SignupScreen = ({ navigation, route }) => {
                                     </View>
                                 </View>
                             </View>
-                            {/* -------------------------- */}
-                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
+                            <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
+                                <TouchableHighlight 
+                                    underlayColor={ Colors.whiteColor }
+                                    style={{ width: "100%", flexDirection: "row", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}
+                                >
+                                    <>
+                                        <MaterialIcons name="add-photo-alternate" size={Dims.iconsize} color={ Colors.whiteColor } />
+                                        <Text style={{ color: Colors.whiteColor, fontFamily: "mons", paddingHorizontal: 10 }}>Photo de profile</Text>
+                                    </>
+                                </TouchableHighlight>
+                            </View>
+                            {/* <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Genre <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
-                                        {/* <TextInput style={{ backgroundColor: Colors.pillColor,fontFamily: "mons",  height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} /> */}
                                         <Dropdown
                                             style={[{ width: "100%", paddingRight: 15, marginTop: 0, height: "100%", backgroundColor: Colors.pillColor }]}
                                             placeholderStyle={{ color: Colors.placeHolderColor, fontFamily: "mons", fontSize: Dims.iputtextsize, paddingLeft: 25 }}
@@ -142,13 +162,11 @@ export const SignupScreen = ({ navigation, route }) => {
                                         />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                        {/* <Entypo name="phone" size={ Dims.iconsize } color={ Colors.whiteColor } /> */}
                                         <MaterialCommunityIcons name="gender-male-female" size={Dims.iconsize} color={ Colors.whiteColor } />
                                     </View>
                                 </View>
-                            </View>
-                            {/* -------------------------- */}
-                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
+                            </View> */}
+                            {/* <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Age <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
@@ -156,45 +174,9 @@ export const SignupScreen = ({ navigation, route }) => {
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <MaterialIcons name="verified-user" size={ Dims.iconsize } color={ Colors.whiteColor } />
-                                        {/* <Entypo name="phone" size={ Dims.iconsize } color={ Colors.whiteColor } /> */}
                                     </View>
                                 </View>
-                            </View>
-                            {/* -------------------------- */}
-                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
-                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Hôpital de reférence </Text>
-                                <View style={ inputGroup.container }>
-                                    <View style={ inputGroup.inputcontainer }>
-                                        {/* <TextInput style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} /> */}
-                                        {/* styles.dropdown, isFocus && { borderColor: 'blue' } */}
-                                        <Dropdown
-                                            style={[{ width: "100%", paddingRight: 15, marginTop: 0, height: "100%" }]}
-                                            placeholderStyle={{ color: Colors.placeHolderColor, fontFamily: "mons", fontSize: Dims.iputtextsize, paddingLeft: 25 }}
-                                            containerStyle={{}}
-                                            selectedTextStyle={{ color: Colors.primaryColor, fontFamily: "mons", paddingLeft: 25, fontSize: Dims.iputtextsize }}
-                                            inputSearchStyle={{ backgroundColor: Colors.pillColor, height: 45, width: "95%", paddingLeft: 5, fontFamily: "mons", fontSize: Dims.iputtextsize }}
-                                            data={hosps}
-                                            search
-                                            maxHeight={ 200 }
-                                            labelField="name"
-                                            valueField="id"
-                                            placeholder={!isFocus ? 'Séléctionner un établissement' : '...'}
-                                            searchPlaceholder="Recherche ..."
-                                            value={hosp}
-                                            onFocus={() => setIsFocus(true)}
-                                            onBlur={() => setIsFocus(false)}
-                                            onChange={item => {
-                                                // alert(item.value)
-                                                sethosp(item.name);
-                                                setIsFocus(false);
-                                            }}
-                                        />
-                                    </View>
-                                    <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                        <FontAwesome5 name="hospital-symbol" size={ Dims.iconsize } color={ Colors.whiteColor } />
-                                    </View>
-                                </View>
-                            </View>
+                            </View> */}
                             {/* -------------------------- */}
                             <Divider style={{ marginTop: 25 }} />
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 10 }}>
