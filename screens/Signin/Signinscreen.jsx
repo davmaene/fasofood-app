@@ -218,7 +218,10 @@ export const SigninScreen = ({ navigation, route }) => {
                         </View>
                         <View style={{ width: "85%", alignSelf: "center" }}>
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 2 }}>
-                                <TouchableHighlight style={{ width: "100%", backgroundColor: Colors.pillColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
+                                <TouchableHighlight 
+                                    underlayColor={Colors.secondaryColor}
+                                    onPress={() => navigation.navigate("recoverpassword")}
+                                    style={{ width: "100%", backgroundColor: Colors.pillColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: Colors.primaryColor, fontFamily: "mons-b" }}>Mot de passe oublié ?</Text>
                                 </TouchableHighlight>
                             </View>

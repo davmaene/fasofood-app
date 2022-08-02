@@ -15,6 +15,7 @@ import { Provider } from 'react-native-paper';
 import { toastConfig } from './assets/Toast/Toastconfig';
 import Toast from 'react-native-toast-message';
 import { IntervationScreen } from './screens/Intervation/IntervationScreen';
+import { Recoverpassword } from './screens/Recoverpassword/Recoverpassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ export default function App() {
           <Stack.Screen name="settings" component={SettingScreen} />
           <Stack.Screen name="verifyaccount" component={VerifyaccountScreen} />
           <Stack.Screen name="intervention" component={IntervationScreen} />
+          <Stack.Screen name="recoverpassword" component={Recoverpassword} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast config={toastConfig} />
