@@ -4,7 +4,7 @@ import { Colors } from '../../assets/colors/Colors';
 import { Dims } from '../../assets/dimensions/Dimemensions';
 import { Footer } from '../../components/Footer/comp.footer';
 import { Header } from '../../components/Header/comp.header';
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { btn, inputGroup } from '../../assets/styles/Styles';
 import { Divider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
@@ -145,16 +145,13 @@ export const SigninScreen = ({ navigation, route }) => {
                     <View style={{ borderTopEndRadius: Dims.bigradius, borderTopStartRadius: Dims.bigradius, backgroundColor: Colors.whiteColor, height: Dims.height, marginTop: Dims.smallradius }}>
                         <View style={{width: "85%", alignSelf: "center", marginTop: Dims.bigradius }}>
                             <View style={{width: "100%", height: 65, flexDirection: "column"}}>
-                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Numéro de téléphone</Text>
+                                <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse email</Text>
                                 <View style={[ inputGroup.container, { flexDirection: "row-reverse" } ]}>
                                     <View style={{ width: "80%", justifyContent: "center", alignContent: "center", alignItems: "center", flexDirection: "row" }}>
-                                        <View style={{height: "100%", justifyContent: "center", backgroundColor: Colors.pillColor }}>
-                                            <Text style={{ paddingLeft: 25, fontFamily: "mons", color: Colors.primaryColor }}>+243</Text>
-                                        </View>
-                                        <TextInput placeholder='000 000 000' maxLength={10} keyboardType={"number-pad"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "85%" }]} />
+                                        <TextInput placeholder='me@example.fa' maxLength={10} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%" }]} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
-                                        <Entypo name="phone" size={Dims.iconsize} color={ Colors.whiteColor } />
+                                        <MaterialIcons name="email" size={Dims.iconsize} color={ Colors.whiteColor } />
                                     </View>
                                 </View>
                             </View>
