@@ -1,1 +1,2 @@
-# sos_afia_frontend
+# FASO Food
+Est une app de livraison des food
