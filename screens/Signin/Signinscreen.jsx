@@ -184,7 +184,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                         onSubmit()
                                     }}
                                     disabled={isloading}
-                                    underlayColor={ Colors.whiteColor }
+                                    underlayColor={ Colors.primaryColor }
                                     style={btn}
                                 >
                                     {isloading 

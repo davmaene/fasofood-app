@@ -14,6 +14,10 @@ export const LoadingSceen = ({ navigation }) => {
 
       await Fonts.loadAsync({
         "nab": require("../../assets/fonts/Nabila.ttf"),
+        "rob-b": require("../../assets/fonts/Roboto-Bold.ttf"),
+        "rob-l": require("../../assets/fonts/Roboto-LightItalic.ttf"),
+        "rob-r": require("../../assets/fonts/Roboto-Regular.ttf"),
+        "nab": require("../../assets/fonts/Nabila.ttf"),
         "mons-e": require("../../assets/fonts/MontserratAlternates-ExtraLight.ttf"),
         "mons-a": require("../../assets/fonts/MontserratAlternates-Bold.ttf"),
         "mons": require("../../assets/fonts/MontserratAlternates-SemiBold.ttf"),
