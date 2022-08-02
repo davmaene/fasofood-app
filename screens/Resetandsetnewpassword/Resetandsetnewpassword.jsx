@@ -13,7 +13,7 @@ import DialogBox from 'react-native-dialogbox';
 import { LoadingSceen } from '../Loading/LoadingScreen';
 import { Loader } from '../../components/Loader/comp.loader';
 
-export const Recoverpassword = ({ navigation, route }) => {
+export const Resetandsetnewpassword = ({ navigation, route }) => {
 
     const [isloading, setisloading] = React.useState(false);
     const [num, setnum] = React.useState("");
@@ -21,13 +21,11 @@ export const Recoverpassword = ({ navigation, route }) => {
     const [eye, seteye] = React.useState(true);
     const [output, setoutput] = React.useState("");
     const ref = React.useRef();
-    const [step, setstep] = React.useState(0);
+    const [step, setstep] = React.useState(1);
 
 
     const onSubmit = async () => {
         setoutput("");
-        setstep(1)
-        return false;
         if(num.length > 0 && num.length < 10){
             if(password.length > 0){
                 setisloading(true)
