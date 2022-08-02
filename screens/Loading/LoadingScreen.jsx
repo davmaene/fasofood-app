@@ -13,6 +13,7 @@ export const LoadingSceen = ({ navigation }) => {
     const loadFonts = async () => {
 
       await Fonts.loadAsync({
+        "nab": require("../../assets/fonts/Nabila.ttf"),
         "mons-e": require("../../assets/fonts/MontserratAlternates-ExtraLight.ttf"),
         "mons-a": require("../../assets/fonts/MontserratAlternates-Bold.ttf"),
         "mons": require("../../assets/fonts/MontserratAlternates-SemiBold.ttf"),

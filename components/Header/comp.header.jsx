@@ -9,10 +9,10 @@ export const Header = ({ colors }) => {
         <>
             <StatusBar backgroundColor={ Colors.primaryColor } barStyle={ colors ? "light-content" : "default" } />
             <View style={{ padding: 10, alignContent: "center", alignSelf: "center", marginTop: 12, height: 150, justifyContent: "center" }}>
-                <Text style={{ fontFamily: "mons-b", textAlign: "center", fontSize: 35, color: colors ? colors : Colors.primaryColor }}>{appname}</Text>
-                <Text style={{ textAlign: "center", fontFamily: "mons-e", color: colors ? colors : Colors.primaryColor }} >Sauvez une vie en lançant un <Text style={{fontFamily: "mons"}}>SOS</Text>, en cas d'une urgence sanitaire </Text>
+                <Text style={{ fontFamily: "nab", textAlign: "center", fontSize: 35, color: colors ? colors : Colors.primaryColor }}>{appname}</Text>
+                <Text style={{ textAlign: "center", fontFamily: "mons-e", color: colors ? colors : Colors.primaryColor }} >Avec <Text style={{fontFamily: "mons"}}>{appname}</Text>, ne mourrez plus de faim </Text>
                 <Divider style={{ marginVertical: 10, backgroundColor: Colors.whiteColor }} />
-                <Text style={{ textAlign: "center", fontFamily: "mons-e", color: colors ? colors : Colors.primaryColor }} >SOS Afia, vous permet de lancer une alerte et de sauver une vie grace à cette alerte, car elle permettra à un etablissement sanitaire d'être au courant d'un cas d'urgence </Text>
+                <Text style={{ textAlign: "center", fontFamily: "mons-e", color: colors ? colors : Colors.primaryColor }} >{appname} vous permet de passer une commande dans les milliers des fastfood de notre collection, et d'être livrer en un temps record </Text>
             </View>
         </>
     )
