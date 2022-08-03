@@ -12,6 +12,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Toast from 'react-native-toast-message';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
+import PhoneInput from "react-native-phone-number-input";
 
 export const SignupScreen = ({ navigation, route }) => {
 
@@ -23,8 +24,11 @@ export const SignupScreen = ({ navigation, route }) => {
     const [genders, setgeders] = React.useState([]);
     const [hosps, sethops] = React.useState([]);
     const [temp, settemp] = React.useState([]);
+    const [value, setValue] = React.useState("");
+    const [formattedValue, setFormattedValue] = React.useState("");
     const [isVisible, setisVisible] = React.useState(false);
     let [uri, seturi] = React.useState("none");
+    const phoneInput = React.useRef()
 
     const loadHospitals = async () => {
         await onRunExternalRQST({
@@ -179,11 +183,31 @@ export const SignupScreen = ({ navigation, route }) => {
                                 </View>
                             </View>
                             {/* -------------------------- */}
-                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
+                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 2}}>
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Numéro de téléphone <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
-                                    <View style={ inputGroup.inputcontainer }>
-                                        <TextInput placeholder='Numéro de téléphone' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                    <View style={[ inputGroup.inputcontainer, {  }]}>
+                                        <PhoneInput
+                                            textContainerStyle={{ fontFamily: "mons" }}
+                                            containerStyle={{ width: "100%", flexDirection: "row", alignContent: "center", alignItems: "center", justifyContent: "center" }}
+                                            ref={phoneInput}
+                                            defaultValue={value}
+                                            defaultCode="DM"
+                                            layout="first"
+                                            onChangeText={(text) => {
+                                                // alert(text)
+                                                setValue(text);
+                                            }}
+                                            onChangeFormattedText={(text) => {
+                                                setFormattedValue(text);
+                                            }}
+                                            textInputStyle={{ fontFamily: "mons",  fontSize: Dims.iputtextsize }}
+                                            placeholder={"Entrer le numéro"}
+                                            codeTextStyle={{ fontFamily: "mons", fontSize: Dims.iputtextsize }}
+                                            // withDarkTheme
+                                            // withShadow
+                                            // autoFocus 
+                                        />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <Entypo name="phone" size={ Dims.iconsize } color={ Colors.whiteColor } />

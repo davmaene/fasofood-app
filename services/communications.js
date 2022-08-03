@@ -106,7 +106,7 @@ export const onRunExternalRQST = async ({ url, data, method }, cb) => {
             timeout,
             method: method ? method : "GET",
             data: data ? data : null,
-            url: `${endpoint}/api${url}`
+            url: `${endpoint}/${url}`
         })
         .then(res => {
             return cb(undefined, res['data'])

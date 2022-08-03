@@ -24,18 +24,19 @@ export const SigninScreen = ({ navigation, route }) => {
 
     const onSubmit = async () => {
         setoutput("");
-        if(num.length > 0 && num.length < 10){
+        if(num.length > 0){
             if(password.length > 0){
                 setisloading(true)
                 try {
                     await onRunExternalRQST({
                         method: "POST",
-                        url: "/users/user/signin",
+                        url: "/auth/login",
                         data: {
-                            phone: num,
+                            email: num,
                             password
                         }
                     }, (err, done) => {
+                        console.log(done);
                         if(done){
                             setisloading(false)
                             switch (done['status']) {
@@ -68,7 +69,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                         text2: 'Le mot de passe ou le nom d\'utilisateur incorect',
                                     });
                                     break;
-                                case 402:
+                                case 401:
                                     setoutput("Votre compte n'est pas encore activé")
                                     ref.current.confirm({
                                         title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Vérification compte</Text>,
@@ -148,7 +149,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse email</Text>
                                 <View style={[ inputGroup.container, { flexDirection: "row-reverse" } ]}>
                                     <View style={{ width: "80%", justifyContent: "center", alignContent: "center", alignItems: "center", flexDirection: "row" }}>
-                                        <TextInput placeholder='me@example.fa' maxLength={10} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%" }]} />
+                                        <TextInput placeholder='me@example.fa' maxLength={50} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%" }]} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <MaterialIcons name="email" size={Dims.iconsize} color={ Colors.whiteColor } />
