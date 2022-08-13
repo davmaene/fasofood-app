@@ -216,7 +216,7 @@ export const HomeScreen = ({ navigation }) => {
     return(
         <>
             <StatusBar barStyle={"light-content"} backgroundColor={ Colors.primaryColor } />
-            <View style={{ flex: 1, backgroundColor: Colors.whiteColor }}>
+            <View style={{ flex: 1, backgroundColor: Colors.whiteColor, display: "none" }}>
                 <LinearGradient
                     colors={[ Colors.primaryColor, Colors.secondaryColor ]}
                     style={{height: 250, width: "100%", borderBottomLeftRadius: bradius, borderBottomRightRadius: bradius, elevation: 10 }}

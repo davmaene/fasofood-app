@@ -103,11 +103,12 @@ export const SignupScreen = ({ navigation, route }) => {
                         if(value.length > 5 && formattedValue.length > 0){
                             if(pwd.length >= 6){
                                 if(pwd === pwdr){
+
                                     setisloading(true);
                                     const formdata = new FormData();
                                     formdata.append("username", `${fs} ${ls}`);
                                     formdata.append("phone", formattedValue);
-                                    formdata.append("email", email);
+                                    formdata.append("email", email.trim());
                                     formdata.append("password", pwd);
                                     formdata.append("avatar", uri);
                         
@@ -116,8 +117,6 @@ export const SignupScreen = ({ navigation, route }) => {
                                         data: formdata,
                                         url: `/auth/create`
                                     }, (err, done) => {
-                                        console.log(" Done => ", done);
-                                        console.log(" Erreur est => ",err);
                                         if(done){
                                             setisloading(false);
                                             switch (done && done['status']) {
@@ -128,9 +127,9 @@ export const SignupScreen = ({ navigation, route }) => {
                                                     Toast.show({
                                                         type: 'error',
                                                         text1: 'Erreur',
-                                                        text2: 'L\'Adresse email entrée est incorrecte !',
+                                                        text2: 'L\'adresse email entrée est incorrecte !',
                                                     });
-                                                    setoutput("Le numéro de téléphone ou l'adresse mail est déjà pris !");
+                                                    setoutput("L\'adresse email entrée est incorrecte !");
                                                     break;
                                                 case 500:
                                                     setoutput("Le numéro de téléphone ou l'adresse mail est déjà pris !");
