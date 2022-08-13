@@ -27,6 +27,11 @@ axios.interceptors.response.use(
 });
 
 export const timeout = 25000;
+export const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Access-Control-Allow-Origin", "*");
+    headers.append("Access-Control-Allow-Methods","POST, GET, PUT");
+    headers.append("Accept", "application/json");
 
 export const onRunInsertQRY = async ({ columns, dot, table, values, options }, cb) => {
     try {
@@ -101,9 +106,11 @@ export const onRunRetrieveQRY = async ({ table, limit }, cb) => {
 };
 
 export const onRunExternalRQST = async ({ url, data, method }, cb) => {
+
     try {
         await axios({
             timeout,
+            headers,
             method: method ? method : "GET",
             data: data ? data : null,
             url: `${endpoint}/${url}`
@@ -112,9 +119,11 @@ export const onRunExternalRQST = async ({ url, data, method }, cb) => {
             return cb(undefined, res['data'])
         })
         .catch(err => {
+            console.log(err);
             return cb(err, undefined)
         })
     } catch (error) {
+        console.log(error);
         return cb(error, undefined)
     }
 };

@@ -8,7 +8,6 @@ import { AntDesign, Entypo, Feather, FontAwesome, MaterialIcons, FontAwesome5, M
 import { button, inputGroup, modal } from '../../assets/styles/Styles';
 import { Divider } from 'react-native-paper';
 import { onRunExternalRQST } from '../../services/communications';
-import { Dropdown } from 'react-native-element-dropdown';
 import Toast from 'react-native-toast-message';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
@@ -117,11 +116,21 @@ export const SignupScreen = ({ navigation, route }) => {
                                         data: formdata,
                                         url: `/auth/create`
                                     }, (err, done) => {
+                                        console.log(" Done => ", done);
+                                        console.log(" Erreur est => ",err);
                                         if(done){
                                             setisloading(false);
                                             switch (done && done['status']) {
                                                 case 201:
                                                     navigation.replace("verifyaccount", { item: { user:  done && done['data'], code: "---" } });
+                                                    break;
+                                                case 400:
+                                                    Toast.show({
+                                                        type: 'error',
+                                                        text1: 'Erreur',
+                                                        text2: 'L\'Adresse email entrée est incorrecte !',
+                                                    });
+                                                    setoutput("Le numéro de téléphone ou l'adresse mail est déjà pris !");
                                                     break;
                                                 case 500:
                                                     setoutput("Le numéro de téléphone ou l'adresse mail est déjà pris !");
@@ -141,6 +150,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                                     break;
                                             }
                                         }else{
+                                            setisloading(false);
                                             setoutput("Une erreur inconnue vient de se produire !")
                                             Toast.show({
                                                 type: 'error',
@@ -291,7 +301,7 @@ export const SignupScreen = ({ navigation, route }) => {
                             </View>
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
                                 <TouchableHighlight 
-                                    underlayColor={ Colors.whiteColor }
+                                    underlayColor={ Colors.primaryColor }
                                     onPress={() => setisVisible(true)}
                                     style={{ width: "100%", flexDirection: "row", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}
                                 >
@@ -342,6 +352,9 @@ export const SignupScreen = ({ navigation, route }) => {
                                 >
                                    { isloading ? <Loader /> : <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Enregistrer</Text> }
                                 </TouchableHighlight>
+                            </View>
+                            <View style={{ paddingVertical: 6 }}>
+                                <Text style={{ textAlign: "center", fontFamily: "mons-b", color: Colors.dangerColor }}>{output}</Text>
                             </View>
                         </View>
                         <View style={{flexDirection: "row", width: "85%", alignSelf: "center", alignContent: "center", alignItems: "center", justifyContent: "space-between" }}>
