@@ -17,18 +17,12 @@ import PhoneInput from "react-native-phone-number-input";
 export const SignupScreen = ({ navigation, route }) => {
 
     const [isloading, setisloading] = React.useState(false);
-    const [isFocus, setIsFocus] = React.useState(false);
-    const [isFocusg, setIsFocusg] = React.useState(false);
-    const [hosp ,sethosp] = React.useState({});
-    const [gender, setgender] = React.useState("");
-    const [genders, setgeders] = React.useState([]);
-    const [hosps, sethops] = React.useState([]);
-    const [temp, settemp] = React.useState([]);
     const [value, setValue] = React.useState("");
     const [formattedValue, setFormattedValue] = React.useState("");
     const [isVisible, setisVisible] = React.useState(false);
     let [uri, seturi] = React.useState("none");
     const phoneInput = React.useRef();
+    const [output, setoutput] = React.useState("");
 
     const [fs, setfs] = React.useState("");
     const [ls, setls] = React.useState("");
@@ -100,6 +94,7 @@ export const SignupScreen = ({ navigation, route }) => {
     };
 
     const onSubmit = async () => {
+        setoutput("");
         try {
             if(fs.length > 0){
                 if(ls.length > 0){
@@ -107,13 +102,59 @@ export const SignupScreen = ({ navigation, route }) => {
                         if(value.length > 5 && formattedValue.length > 0){
                             if(pwd.length >= 6){
                                 if(pwd === pwdr){
-
+                                    setisloading(true);
+                                    const formdata = new FormData();
+                                    formdata.append("username", `${fs} ${ls}`);
+                                    formdata.append("phone", formattedValue);
+                                    formdata.append("email", email);
+                                    formdata.append("password", pwd);
+                                    formdata.append("avatar", uri);
+                        
+                                    onRunExternalRQST({
+                                        method: "POST",
+                                        data: formdata,
+                                        url: `/auth/create`
+                                    }, (err, done) => {
+                                        if(done){
+                                            setisloading(false);
+                                            switch (done && done['status']) {
+                                                case 201:
+                                                    navigation.replace("verifyaccount", { item: done && done['data'] });
+                                                    break;
+                                                case 500:
+                                                    setoutput("Le numéro de téléphone ou l'adresse mail est déjà pris !");
+                                                    Toast.show({
+                                                        type: 'error',
+                                                        text1: 'Erreur',
+                                                        text2: 'Une erreur inconnue vient de se produire !',
+                                                    });
+                                                    break;
+                                                default:
+                                                    setoutput("Une erreur inconnue vient de se produire !")
+                                                    Toast.show({
+                                                        type: 'error',
+                                                        text1: 'Erreur',
+                                                        text2: 'Une erreur inconnue vient de se produire !',
+                                                    });
+                                                    break;
+                                            }
+                                        }else{
+                                            setoutput("Une erreur inconnue vient de se produire !")
+                                            Toast.show({
+                                                type: 'error',
+                                                text1: 'Erreur',
+                                                text2: 'Une erreur inconnue vient de se produire !',
+                                            });
+                                        }
+                                    })
                                 }else{
                                     Toast.show({
                                         type: 'error',
                                         text1: 'Erreur',
                                         text2: 'Les mot de passe ne sont pas identiques !',
                                     });
+                                    setoutput("Les mot de passe ne sont pas identiques !")
+
                                 }
                             }else{
                                 Toast.show({
@@ -121,6 +162,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                     text1: 'Erreur',
                                     text2: 'Le mot de passe doit avoir 6 catactères au minimum !',
                                 }); 
+                                setoutput("Le mot de passe doit avoir 6 catactères au minimum !")
                             }
                         }else{
                             Toast.show({
@@ -128,6 +170,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                 text1: 'Erreur',
                                 text2: 'Entrer le numéro de téléphone !',
                             });
+                            setoutput("Entrer le numéro de téléphone !")
                         }
                     }else{
                         Toast.show({
@@ -135,6 +178,7 @@ export const SignupScreen = ({ navigation, route }) => {
                             text1: 'Erreur',
                             text2: 'Ajouter l\'adresse mail !',
                         });
+                        setoutput("Ajouter l\'adresse mail !")
                     }
                 }else{
                     Toast.show({
@@ -142,6 +186,7 @@ export const SignupScreen = ({ navigation, route }) => {
                         text1: 'Erreur',
                         text2: 'Ajouter le postnom d\'utilisateur svplait !',
                     });
+                    setoutput("Ajouter le postnom d\'utilisateur svplait !")
                 }
             }else{
                 Toast.show({
@@ -149,6 +194,7 @@ export const SignupScreen = ({ navigation, route }) => {
                     text1: 'Erreur',
                     text2: 'Ajouter le nom d\'utilisateur svplait !',
                 });
+                setoutput("Ajouter le nom d\'utilisateur svplait !")
             }
         } catch (error) {
             Toast.show({
@@ -156,6 +202,7 @@ export const SignupScreen = ({ navigation, route }) => {
                 text1: 'Erreur',
                 text2: 'Une erreur inconnue vient de se produire !',
             });
+            setoutput("Une erreur inconnue vient de se produire !")
         }
     };
 
