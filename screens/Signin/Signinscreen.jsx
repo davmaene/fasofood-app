@@ -41,18 +41,20 @@ export const SigninScreen = ({ navigation, route }) => {
                             setisloading(false)
                             switch (done['status']) {
                                 case 200:
-                                    const u = done && done['data'];
+                                    const u = done && done['user'];
+                                    const __ = u && u['username'];
+                                    const fs = __.substring(0, __.lastIndexOf(" "));
+                                    const ls = __.substring(__.lastIndexOf(" "));
+
                                     onRunInsertQRY({
-                                        table: "__tbl_users_",
-                                        columns: `'fsname', 'lsname', 'nickname', 'age', 'gender', 'phone', 'crearedon', 'hospitalref'`,
-                                        dot: "?, ?, ?, ?, ?, ?, ?, ?",
-                                        values: [`${u['fsname']}`, `${u['lsname']}`, `${u['nickname']}`, `${u['age']}`, `${u['gender']}`, `${u['phone']}`, `${new Date().toLocaleString()}`, `${u['hospitalref']}`]
+                                        table: "__tbl_users",
+                                        columns: `'fsname', 'lsname', 'phone', 'email', 'crearedon', 'role'`,
+                                        dot: "?, ?, ?, ?, ?, ?",
+                                        values: [`${fs}`, `${ls}`, `${u['phone']}`, `${u['email']}`, `${new Date().toLocaleString()}`, `${u['role']}`]
                                     }, (err, insert) => {
                                         if(insert) navigation.replace("tabs");
                                         else{
                                             setisloading(false);
-                                            setcanverify(true);
-                                            setValue("")
                                             Toast.show({
                                                 type: 'error',
                                                 text1: 'Erreur',
@@ -72,10 +74,10 @@ export const SigninScreen = ({ navigation, route }) => {
                                 case 401:
                                     setoutput("Votre compte n'est pas encore activé")
                                     ref.current.confirm({
-                                        title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Vérification compte</Text>,
+                                        title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Vérification et activation du compte</Text>,
                                         content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >Votre compte n'est pas encore activé, voulez-vous activer le compte</Text>],
                                         ok: {
-                                            text: 'Vérifier le compte',
+                                            text: 'Activer le compte',
                                             style: {
                                                 color: Colors.primaryColor,
                                                 fontFamily: 'mons'

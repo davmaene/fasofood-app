@@ -49,17 +49,20 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
                 }
             }, (er, dn) => {
                 if(dn && dn['status'] === 200){
+                    const u = dn && dn['user'];
+                    const __ = u && u['username'];
+                    const fs = __.substring(0, __.lastIndexOf(" "));
+                    const ls = __.substring(__.lastIndexOf(" "));
+
                     onRunInsertQRY({
-                        table: "__tbl_users_",
-                        columns: `'fsname', 'lsname', 'nickname', 'age', 'gender', 'phone', 'crearedon', 'hospitalref'`,
-                        dot: "?, ?, ?, ?, ?, ?, ?, ?",
-                        values: [`${u['fsname']}`, `${u['lsname']}`, `${u['nickname']}`, `${u['age']}`, `${u['gender']}`, `${u['phone']}`, `${new Date().toLocaleString()}`, `${u['hospitalref']}`]
+                        table: "__tbl_users",
+                        columns: `'fsname', 'lsname', 'phone', 'email', 'crearedon', 'role'`,
+                        dot: "?, ?, ?, ?, ?, ?",
+                        values: [`${fs}`, `${ls}`, `${u['phone']}`, `${u['email']}`, `${new Date().toLocaleString()}`, `${u['role']}`]
                     }, (err, insert) => {
                         if(insert) navigation.replace("tabs");
                         else{
                             setisloading(false);
-                            setcanverify(true);
-                            setValue("")
                             Toast.show({
                                 type: 'error',
                                 text1: 'Erreur',
