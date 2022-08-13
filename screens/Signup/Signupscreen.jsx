@@ -30,6 +30,7 @@ export const SignupScreen = ({ navigation, route }) => {
     const [email, setemail] = React.useState("");
     const [pwd, setpwd] = React.useState("");
     const [pwdr, setpwdr] = React.useState("");
+    const [vs, setvs] = React.useState(false);
 
     const onImageLibraryPress = async () => {
         (async () => {
@@ -257,7 +258,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                 </View>
                             </View>
                             {/* -------------------------- */}
-                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 2}}>
+                            <View style={{width: "100%", height: 65, flexDirection: "column", marginTop: 15}}>
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Numéro de téléphone <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={[ inputGroup.inputcontainer, {  }]}>
@@ -304,10 +305,17 @@ export const SignupScreen = ({ navigation, route }) => {
                             <Divider style={{ marginTop: 25 }} />
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 10 }}>
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Mot de passe <Text style={{color: Colors.dangerColor}}>*</Text></Text>
-                                <View style={ inputGroup.container }>
-                                    <View style={ inputGroup.inputcontainer }>
-                                        <TextInput onChangeText={txt => setpwd(txt)} placeholder='Crée un mot de passe ici ' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                <View style={ [ inputGroup.container, { flexDirection: "row" }] }>
+                                    <View style={ [ inputGroup.inputcontainer, { width: "60%" } ] }>
+                                        <TextInput secureTextEntry={!vs} onChangeText={txt => setpwd(txt)} placeholder='Crée un mot de passe ici ' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
                                     </View>
+                                    <TouchableHighlight
+                                        underlayColor={Colors.whiteColor}
+                                        onPress={() => setvs(!vs)} 
+                                        style={[ inputGroup.iconcontainer, { backgroundColor: Colors.pillColor }]}
+                                    >
+                                        <Ionicons name={vs ? "eye-off" : "eye"} size={ Dims.iconsize } color={ Colors.primaryColor } />
+                                    </TouchableHighlight>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <Entypo name="lock" size={ Dims.iconsize} color={Colors.whiteColor } />
                                     </View>
@@ -318,7 +326,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Confirmation mot de passe <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
-                                        <TextInput onChangeText={txt => setpwdr(txt)} placeholder='confirme le mot de passe ici ' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                        <TextInput secureTextEntry={!vs} onChangeText={txt => setpwdr(txt)} placeholder='confirme le mot de passe ici ' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <Entypo name="lock" size={ Dims.iconsize} color={Colors.whiteColor } />
@@ -329,7 +337,7 @@ export const SignupScreen = ({ navigation, route }) => {
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
                                 <TouchableHighlight 
                                     onPress={() => onSubmit()}
-                                    underlayColor={ Colors.whiteColor }
+                                    underlayColor={ Colors.primaryColor }
                                     style={{ width: "100%", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}
                                 >
                                    { isloading ? <Loader /> : <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Enregistrer</Text> }
