@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.fasofood.davme",
+      "bundleIdentifier": "com.fasofood.dame",
       "buildNumber": "1.0.1",
       "infoPlist": {
         "NSCameraUsageDescription": "Fasofood démande accès à la camera pour scanner le QRCode au processus de paiement de transport",
@@ -30,7 +30,7 @@
       }
     },
     "android": {
-      "package": "com.fasofood.davme",
+      "package": "com.fasofood.dame",
       "versionCode": 17,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
@@ -44,7 +44,7 @@
       [
         "expo-notifications",
         {
-          "icon": "assets/icon.png",
+          "icon": "./assets/icon.png",
           "color": "#ffffff",
           "mode": "production"
         }

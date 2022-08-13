@@ -101,12 +101,55 @@ export const SignupScreen = ({ navigation, route }) => {
 
     const onSubmit = async () => {
         try {
-            const formdata = new FormData();
-            formdata.append("username", `${fs} ${ls}`);
-            formdata.append("phone", formattedValue);
-            formdata.append("email", email);
-            formdata.append("password", pwd);
-            formdata.append("avatar", uri);
+            if(fs.length > 0){
+                if(ls.length > 0){
+                    if(email.length > 0){
+                        if(value.length > 5 && formattedValue.length > 0){
+                            if(pwd.length >= 6){
+                                if(pwd === pwdr){
+
+                                }else{
+                                    Toast.show({
+                                        type: 'error',
+                                        text1: 'Erreur',
+                                        text2: 'Les mot de passe ne sont pas identiques !',
+                                    });
+                                }
+                            }else{
+                                Toast.show({
+                                    type: 'error',
+                                    text1: 'Erreur',
+                                    text2: 'Le mot de passe doit avoir 6 catactères au minimum !',
+                                }); 
+                            }
+                        }else{
+                            Toast.show({
+                                type: 'error',
+                                text1: 'Erreur',
+                                text2: 'Entrer le numéro de téléphone !',
+                            });
+                        }
+                    }else{
+                        Toast.show({
+                            type: 'error',
+                            text1: 'Erreur',
+                            text2: 'Ajouter l\'adresse mail !',
+                        });
+                    }
+                }else{
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Erreur',
+                        text2: 'Ajouter le postnom d\'utilisateur svplait !',
+                    });
+                }
+            }else{
+                Toast.show({
+                    type: 'error',
+                    text1: 'Erreur',
+                    text2: 'Ajouter le nom d\'utilisateur svplait !',
+                });
+            }
         } catch (error) {
             Toast.show({
                 type: 'error',
