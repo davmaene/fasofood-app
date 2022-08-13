@@ -358,7 +358,7 @@ export const SignupScreen = ({ navigation, route }) => {
                         <View style={{ width: "85%", alignSelf: "center" }}>
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
                                 <TouchableHighlight 
-                                    underlayColor={Colors.whiteColor}
+                                    underlayColor={Colors.secondaryColor}
                                     onPress={() => {
                                         navigation.navigate("signin")
                                     }}
