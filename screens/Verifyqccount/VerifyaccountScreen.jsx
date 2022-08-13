@@ -148,8 +148,6 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
     };
 
     React.useEffect(() => {
-        // console.log("Code => ", c);
-        // console.log("User => ", u);
         onValueFulFil()
     }, [onValueFulFil])
 

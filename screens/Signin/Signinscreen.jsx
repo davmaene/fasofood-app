@@ -10,7 +10,6 @@ import { Divider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { onRunExternalRQST, onRunInsertQRY } from '../../services/communications';
 import DialogBox from 'react-native-dialogbox';
-import { LoadingSceen } from '../Loading/LoadingScreen';
 import { Loader } from '../../components/Loader/comp.loader';
 
 export const SigninScreen = ({ navigation, route }) => {

@@ -28,25 +28,13 @@ export const SignupScreen = ({ navigation, route }) => {
     const [formattedValue, setFormattedValue] = React.useState("");
     const [isVisible, setisVisible] = React.useState(false);
     let [uri, seturi] = React.useState("none");
-    const phoneInput = React.useRef()
+    const phoneInput = React.useRef();
 
-    const loadHospitals = async () => {
-        await onRunExternalRQST({
-            method: "GET",
-            url: "/hospitals/list"
-        }, (err, done) => {
-            if(done && done['status'] === 200){
-                sethops(done['data'])
-                settemp(done['data'])
-            }else{
-                Toast.show({
-                    type: 'error',
-                    text1: <Text style={{fontFamily: "mons-b"}}>Erreur</Text>,
-                    text2: <Text style={{fontFamily: "mons"}}>Erreur de chargement des informations ...</Text>,
-                });
-            }
-        })
-    };
+    const [fs, setfs] = React.useState("");
+    const [ls, setls] = React.useState("");
+    const [email, setemail] = React.useState("");
+    const [pwd, setpwd] = React.useState("");
+    const [pwdr, setpwdr] = React.useState("");
 
     const onImageLibraryPress = async () => {
         (async () => {
@@ -77,7 +65,7 @@ export const SignupScreen = ({ navigation, route }) => {
         let type = match ? `image/${match[1]}` : `image`;
         setisVisible(false)
         seturi({ uri: localUri, name: filename, type });
-    }
+    };
     
     const onCameraPress = async () => {
         (async () => {
@@ -109,26 +97,21 @@ export const SignupScreen = ({ navigation, route }) => {
         let type = match ? `image/${match[1]}` : `image`;
         setisVisible(false)
         seturi({ uri: localUri, name: filename, type });
-    }
+    };
 
     const onSubmit = async () => {
-        if(1){
-            await onRunExternalRQST({
-                method: "GET",
-                url: "/hospitals/list"
-            }, (err, done) => {
-                if(done && done['status'] === 200){
-                    sethops(done['data'])
-                    settemp(done['data'])
-                }else{
-
-                }
-            })
-        }else{
+        try {
+            const formdata = new FormData();
+            formdata.append("username", `${fs} ${ls}`);
+            formdata.append("phone", formattedValue);
+            formdata.append("email", email);
+            formdata.append("password", pwd);
+            formdata.append("avatar", uri);
+        } catch (error) {
             Toast.show({
                 type: 'error',
                 text1: 'Erreur',
-                text2: 'Completer tous les champs avant de continuer !',
+                text2: 'Une erreur inconnue vient de se produire !',
             });
         }
     };
@@ -151,7 +134,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Nom <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
-                                        <TextInput placeholder='Nom' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                        <TextInput onChangeText={txt => setfs(txt)} placeholder='Nom' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <FontAwesome name="user" size={ Dims.iconsize } color={ Colors.whiteColor } />
@@ -163,7 +146,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Postnom <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
-                                        <TextInput placeholder='Postnom' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                        <TextInput onChangeText={txt => setls(txt)} placeholder='Postnom' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <FontAwesome name="user" size={ Dims.iconsize } color={ Colors.whiteColor } />
@@ -175,7 +158,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse mail <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
-                                        <TextInput placeholder='Adresse mail ...' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                        <TextInput onChangeText={txt => setemail(txt)} placeholder='Adresse mail ...' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <MaterialIcons name="email" size={ Dims.iconsize } color={ Colors.whiteColor } />
@@ -232,7 +215,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Mot de passe <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
-                                        <TextInput placeholder='Crée un mot de passe ici ' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                        <TextInput onChangeText={txt => setpwd(txt)} placeholder='Crée un mot de passe ici ' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <Entypo name="lock" size={ Dims.iconsize} color={Colors.whiteColor } />
@@ -244,7 +227,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Confirmation mot de passe <Text style={{color: Colors.dangerColor}}>*</Text></Text>
                                 <View style={ inputGroup.container }>
                                     <View style={ inputGroup.inputcontainer }>
-                                        <TextInput placeholder='confirme le mot de passe ici ' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
+                                        <TextInput onChangeText={txt => setpwdr(txt)} placeholder='confirme le mot de passe ici ' style={{ backgroundColor: Colors.pillColor, height: "100%", width: "100%", paddingLeft: 25, fontFamily: "mons", fontSize: Dims.iputtextsize }} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <Entypo name="lock" size={ Dims.iconsize} color={Colors.whiteColor } />
@@ -254,6 +237,7 @@ export const SignupScreen = ({ navigation, route }) => {
                             {/* -------------------------- */}
                             <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
                                 <TouchableHighlight 
+                                    onPress={() => onSubmit()}
                                     underlayColor={ Colors.whiteColor }
                                     style={{ width: "100%", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}
                                 >
