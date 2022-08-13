@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
 import PhoneInput from "react-native-phone-number-input";
+import { Loader } from '../../components/Loader/comp.loader';
 
 export const SignupScreen = ({ navigation, route }) => {
 
@@ -331,7 +332,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                     underlayColor={ Colors.whiteColor }
                                     style={{ width: "100%", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}
                                 >
-                                    <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Enregistrer</Text>
+                                   { isloading ? <Loader /> : <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Enregistrer</Text> }
                                 </TouchableHighlight>
                             </View>
                         </View>
