@@ -119,7 +119,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                             setisloading(false);
                                             switch (done && done['status']) {
                                                 case 201:
-                                                    navigation.replace("verifyaccount", { item: done && done['data'] });
+                                                    navigation.replace("verifyaccount", { item: { user:  done && done['data'], code: "---" } });
                                                     break;
                                                 case 500:
                                                     setoutput("Le numéro de téléphone ou l'adresse mail est déjà pris !");
