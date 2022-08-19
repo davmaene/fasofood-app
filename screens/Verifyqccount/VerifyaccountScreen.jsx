@@ -119,7 +119,7 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
                         Toast.show({
                             type: 'success',
                             text1: 'Code envoyé',
-                            text2: 'Une erreur inconue vient de se produire !',
+                            text2: 'Le code vient d\'être envoyé à votre adresse email !',
                         });
                         break;
                     case 500:
