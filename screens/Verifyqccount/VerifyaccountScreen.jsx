@@ -37,8 +37,6 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
       setValue,
     });
 
-    console.log(item)
-
     const onVerify = () => {
         setisloading(true)
         if(value === c){
@@ -109,14 +107,20 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
         setcanverify(false);
         await onRunExternalRQST({
             method: "PATCH",
-            url: `/auth/resend-verify-email/${user && user['id']}`
+            url: `/auth/resend-verify-email/${user && user['_id']}`
         }, (err, done) => {
+            console.log(done);
             if(done){
                 setcanverify(true);
                 setisloading(false);
                 switch (done['status']) {
-                    case 200:
-                        setc(done && done['data']['code']);
+                    case 201:
+                        // setc(done && done['data']['code']);
+                        Toast.show({
+                            type: 'success',
+                            text1: 'Code envoyé',
+                            text2: 'Une erreur inconue vient de se produire !',
+                        });
                         break;
                     case 500:
                         Toast.show({
