@@ -39,17 +39,17 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
 
     const onVerify = () => {
         setisloading(true)
-        if(value === c){
+        if(1){
             onRunExternalRQST({
-                url: '/users/user/validate',
+                url: '/auth/verify-email',
                 method: "POST",
                 data: {
-                    phone: u && u['phone'],
-                    code: c
+                    "otp": value,
+                    "userId": user && user['_id']
                 }
             }, (er, dn) => {
                 if(dn && dn['status'] === 200){
-                    const u = dn && dn['user'];
+                    const u = user;
                     const __ = u && u['username'];
                     const fs = __.substring(0, __.lastIndexOf(" "));
                     const ls = __.substring(__.lastIndexOf(" "));
