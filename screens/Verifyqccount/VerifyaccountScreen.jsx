@@ -44,10 +44,11 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
                 url: '/auth/verify-email',
                 method: "POST",
                 data: {
-                    "otp": value,
-                    "userId": user && user['_id']
+                    "otp": `${value}`,
+                    "userId": `${user && user['_id']}`
                 }
             }, (er, dn) => {
+                console.log(" The response is ", dn);
                 if(dn && dn['status'] === 200){
                     const u = user;
                     const __ = u && u['username'];
@@ -105,9 +106,10 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
     const onSubmit = async () => {
         setisloading(true);
         setcanverify(false);
+        const id = u && u['_id'] ? u['_id'].toString() : "";
         await onRunExternalRQST({
             method: "PATCH",
-            url: `/auth/resend-verify-email/${user && user['_id']}`
+            url: `/auth/resend-verify-email/${id}`
         }, (err, done) => {
             console.log(done);
             if(done){
@@ -171,7 +173,11 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
                     >
                     <View style={{ borderTopEndRadius: Dims.bigradius, borderTopStartRadius: Dims.bigradius, backgroundColor: Colors.whiteColor, height: Dims.height, marginTop: Dims.smallradius }}>
                         <View style={{ width: "85%", alignSelf: "center", marginTop: Dims.bigradius }}>
-                            <Text style={{fontFamily: "mons-e"}}>Nous venons de detecter que votre compte n'est pas encore activé; nous venons d'envoyer un code de vérification au numéro de téléphone <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor }}>{u && u['phone']}</Text></Text>
+                            <Text style={{fontFamily: "mons-e", textAlign: "center"}}>
+                                Nous venons de detecter que votre compte n'est pas encore activé; nous venons d'envoyer un code de vérification au numéro de téléphone&nbsp;
+                                <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor }}>{u && u['phone']}</Text> et à l'adresse 
+                                <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor, paddingHorizontal: 3 }}>&nbsp;{u && u['email']}</Text>
+                            </Text>
                         </View>
                         <View style={{ width: "85%", alignSelf: "center", marginTop: 5 }}>
                             <View style={{width: "100%", height: 75, flexDirection: "column"}}>
