@@ -81,7 +81,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                                 color: Colors.primaryColor,
                                                 fontFamily: 'mons'
                                             },
-                                            callback: () => navigation.replace("verifyaccount", { item: done['data'] })
+                                            callback: () => navigation.replace("verifyaccount", { item: { user: done['user'], code: "---"} })
                                         },
                                         cancel: {
                                             text: 'Annuler',

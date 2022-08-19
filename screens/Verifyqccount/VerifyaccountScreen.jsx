@@ -37,6 +37,8 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
       setValue,
     });
 
+    console.log(item)
+
     const onVerify = () => {
         setisloading(true)
         if(value === c){
@@ -106,12 +108,8 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
         setisloading(true);
         setcanverify(false);
         await onRunExternalRQST({
-            method: "POST",
-            url: "/users/user/resendcode",
-            data: {
-                oldcode: c,
-                phone: u && u['phone']
-            }
+            method: "PATCH",
+            url: `/auth/resend-verify-email/${user && user['id']}`
         }, (err, done) => {
             if(done){
                 setcanverify(true);
