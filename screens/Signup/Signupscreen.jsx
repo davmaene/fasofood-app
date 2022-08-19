@@ -105,16 +105,22 @@ export const SignupScreen = ({ navigation, route }) => {
                                 if(pwd === pwdr){
 
                                     setisloading(true);
-                                    const formdata = new FormData();
-                                    formdata.append("username", `${fs} ${ls}`);
-                                    formdata.append("phone", formattedValue);
-                                    formdata.append("email", email.trim());
-                                    formdata.append("password", pwd);
-                                    formdata.append("avatar", uri);
+                                    // const formdata = new FormData();
+                                    // formdata.append("username", `${fs} ${ls}`);
+                                    // formdata.append("phone", formattedValue);
+                                    // formdata.append("email", email.trim());
+                                    // formdata.append("password", pwd);
+                                    // formdata.append("avatar", uri);
+                                    const data = {
+                                        "username": `${fs} ${ls}`,
+                                        "phone": formattedValue,
+                                        "email": email.trim(),
+                                        "password": pwd,
+                                    };
                         
                                     onRunExternalRQST({
                                         method: "POST",
-                                        data: formdata,
+                                        data,
                                         url: `/auth/create`
                                     }, (err, done) => {
                                         if(done){

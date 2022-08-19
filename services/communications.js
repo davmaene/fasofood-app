@@ -24,13 +24,15 @@ axios.interceptors.response.use(
     , error => {
         const er = error.response ? error.response : undefined;
         return er ? er : new Promise.reject(error)
-});
+    }
+);
 
 export const timeout = 25000;
 export const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Access-Control-Allow-Origin", "*");
     headers.append("Access-Control-Allow-Methods","POST, GET, PUT");
+    // headers.append("Content-Type", "multipart/form-data");
     // headers.append("Accept", "application/json");
 
 export const onRunInsertQRY = async ({ columns, dot, table, values, options }, cb) => {
