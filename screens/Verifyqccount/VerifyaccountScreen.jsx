@@ -106,7 +106,7 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
     const onSubmit = async () => {
         setisloading(true);
         setcanverify(false);
-        const id = u && u['_id'] ? u['_id'].toString() : "";
+        const id = u && u['_id'] ? u['_id'].toString().trim() : "";
         await onRunExternalRQST({
             method: "PATCH",
             url: `/auth/resend-verify-email/${id}`
