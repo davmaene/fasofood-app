@@ -129,5 +129,21 @@ export const onRunExternalRQST = async ({ url, data, method }, cb) => {
     }
 };
 
+export const onDeconnextion = async (cb) => {
+    try {
+        db.transaction(
+            (tx) => {
+              tx.executeSql(`delete from __tbl_users where id <> 0`, null);
+              tx.executeSql(`delete from __tbl_chats where id <> 0`, null);
+              tx.executeSql(`delete from __tbl_historiques where id <> 0`, null);
+            },
+            err => cb(err, undefined),
+            done => cb(undefined, "done")
+        );
+    } catch (error) {
+        cb(error, undefined)
+    }
+};
+
 
 

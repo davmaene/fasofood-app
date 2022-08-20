@@ -2,10 +2,9 @@ import * as SQLite from "expo-sqlite";
 import { db } from '../dbconnect/dbconnect';
 
 export const OnInitialize = () => {
-
     // table historique
     const __tbl_historiques = () => {
-        db.transaction((tx) => {
+        db.transaction((tx) => { // ie. Orders table
             tx.executeSql(
                 `CREATE TABLE IF NOT EXISTS __tbl_historiques (
                     id integer primary key not null,
@@ -41,6 +40,7 @@ export const OnInitialize = () => {
 
     // table user
     const __tbl_users = () => {
+        // "ALTER TABLE __tbl_users ADD COLUMN `role` varchar(60)",
         db.transaction((tx) => {
             tx.executeSql(
                 `CREATE TABLE IF NOT EXISTS __tbl_users (

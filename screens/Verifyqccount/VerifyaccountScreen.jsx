@@ -111,7 +111,7 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
             method: "PATCH",
             url: `/auth/resend-verify-email/${id}`
         }, (err, done) => {
-            console.log(done);
+            console.log(" Response is => ", done);
             if(done){
                 setcanverify(true);
                 setisloading(false);

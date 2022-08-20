@@ -40,7 +40,7 @@ export const SigninScreen = ({ navigation, route }) => {
                             setisloading(false)
                             switch (done['status']) {
                                 case 200:
-                                    const u = done && done['user'];
+                                    const u = done && done['data']['user'];
                                     const __ = u && u['username'];
                                     const fs = __.substring(0, __.lastIndexOf(" "));
                                     const ls = __.substring(__.lastIndexOf(" "));
@@ -51,6 +51,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                         dot: "?, ?, ?, ?, ?, ?",
                                         values: [`${fs}`, `${ls}`, `${u['phone']}`, `${u['email']}`, `${new Date().toLocaleString()}`, `${u['role']}`]
                                     }, (err, insert) => {
+                                        console.log(err);
                                         if(insert) navigation.replace("tabs");
                                         else{
                                             setisloading(false);
@@ -62,7 +63,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                         }
                                     })
                                     break;
-                                case 203:
+                                case 401:
                                     setoutput("Le mot de passe ou le nom d'utilisateur est incorect")
                                     Toast.show({
                                         type: 'error',
@@ -70,7 +71,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                         text2: 'Le mot de passe ou le nom d\'utilisateur incorect',
                                     });
                                     break;
-                                case 401:
+                                case 400:
                                     setoutput("Votre compte n'est pas encore activé")
                                     ref.current.confirm({
                                         title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Vérification et activation du compte</Text>,
