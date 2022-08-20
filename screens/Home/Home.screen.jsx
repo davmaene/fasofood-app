@@ -17,6 +17,7 @@ import Toast from 'react-native-toast-message';
 import { Loader } from '../../components/Loader/comp.loader';
 import * as Linking from "expo-linking";
 import { toastConfig } from '../../assets/Toast/Toastconfig';
+import { EmptyList } from '../../components/Emptylist/com.emptylist';
 
 const bradius = 100;
 const aradius = 130;
@@ -221,7 +222,7 @@ export const HomeScreen = ({ navigation }) => {
         <>
             <StatusBar barStyle={"light-content"} backgroundColor={ Colors.primaryColor } />
             <View>
-
+                <EmptyList/>
             </View>
             <DialogBox ref={ref} isOverlayClickClose={false} />
         </>
