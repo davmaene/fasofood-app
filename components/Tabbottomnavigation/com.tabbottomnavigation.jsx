@@ -5,12 +5,15 @@ import { ChatScreen } from '../../screens/Chat/ChatScreen';
 import { FeedScreen } from '../../screens/Feeds/FeedScreen';
 import { HomeScreen } from '../../screens/Home/Home.screen';
 import { IntervationScreen } from '../../screens/Intervation/IntervationScreen';
-import { AntDesign, Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { AntDesign, Ionicons, MaterialCommunityIcons, Feather, EvilIcons } from '@expo/vector-icons';
 import { Colors } from '../../assets/colors/Colors';
 import { View, Image } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { ProfileScreen } from '../../screens/Profile/Profilescreen';
+import { Searchscreen } from '../../screens/Search/Searchscreen';
+import { CommandesScreen } from '../../screens/Commandes/Commandesscreen';
+import { Fasoscreen } from '../../screens/Faso/Fasoscreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -67,7 +70,7 @@ export const TabBottom = () => {
           size = 17;
           let iconName;
           switch (route.name) {
-              case 'Acceuil'://<Ionicons name={iconName} size={size} color={color} />;
+              case 'Faso'://<Ionicons name={iconName} size={size} color={color} />;
                   iconName = focused
                   ? 'apps'
                   : 'apps-outline';
@@ -75,30 +78,44 @@ export const TabBottom = () => {
                     <>
                       { focused 
                       ? 
-                      ( <View style={{ backgroundColor: Colors.whiteColor, padding: 8, borderTopEndRadius: 20, borderTopStartRadius: 20, elevation: 2 }}>
+                      ( 
+                        <View style={{ overflow: "hidden", backgroundColor: Colors.whiteColor, padding: 8, borderTopEndRadius: 20, borderTopStartRadius: 20, elevation: 2, height: 45, justifyContent: "center" }}>
                             <Image source={require("../../assets/icon.png")} style={{width: 40, resizeMode: "contain"}} /> 
                         </View>
                       )
-                      : <Ionicons name='apps' size={32} color={color} style={{marginTop: 2}} /> }
+                      : 
+                      (
+                        <View style={{ overflow: "hidden", backgroundColor: Colors.whiteColor, padding: 8, borderTopEndRadius: 20, borderTopStartRadius: 20, elevation: 2, height: 45, justifyContent: "center" }}>
+                          <Image source={require("../../assets/icon-d.png")} style={{width: 40, resizeMode: "contain"}} /> 
+                        </View>
+                      )
+                          // <Ionicons name='apps' size={size} color={color} style={{marginTop: 2}} /> 
+                      }
                     </>
                   )
                   break;
-              case 'Messagerie':
+              case 'Acceuil':
                   iconName = focused
-                  ? 'md-chatbubbles'
-                  : 'md-chatbubbles-outline';
-                  return <Ionicons name={iconName} size={size} color={color} />;
+                  ? 'home'
+                  : 'home';
+                  return <AntDesign name={iconName} size={size} color={color} />;
                   break;
-              case 'Intervation':
+              case 'Recherche':
                 iconName = focused
-                  ? "ambulance"
-                  : "ambulance";
-                  return <MaterialCommunityIcons name={iconName} size={size} color={color} />
+                  ? "search1"
+                  : "search1";
+                  return <AntDesign name={iconName} size={size} color={color} />
                   break;
               case 'Profile':
                 iconName = focused
                   ? "user"
                   : "user";
+                  return <Feather name={iconName} size={size} color={color} />
+                  break;
+              case 'Commandes':
+                iconName = focused
+                  ? "shopping-cart"
+                  : "shopping-cart";
                   return <Feather name={iconName} size={size} color={color} />
                   break;
               case 'Actualités':
@@ -119,8 +136,8 @@ export const TabBottom = () => {
         tabBarVisibilityAnimationConfig: {
           show: true
         },
-        tabBarActiveTintColor: Colors.secondaryColor,
-        tabBarInactiveTintColor: Colors.primaryColor,
+        tabBarActiveTintColor: Colors.primaryColor,
+        tabBarInactiveTintColor: Colors.secondaryColor,
         tabBarLabelPosition: "below-icon",
         headerShown: false,
         tabBarHideOnKeyboard: true,
@@ -132,12 +149,15 @@ export const TabBottom = () => {
         }
       })}
     >
-      <Tab.Screen name="Messagerie" component={ChatScreen} />
+      <Tab.Screen name="Acceuil" component={HomeScreen} />
+      <Tab.Screen name="Recherche" component={Searchscreen} />
+      {/* <Tab.Screen name="Messagerie" component={ChatScreen} /> */}
+      <Tab.Screen name="Faso" component={Fasoscreen} options={{tabBarLabel: ""}} />
+      <Tab.Screen name="Commandes" component={CommandesScreen} />
       {/* <Tab.Screen name="intervation" component={IntervationScreen} /> */}
       <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Acceuil" component={HomeScreen} options={{tabBarLabel: ""}} />
-      <Tab.Screen name="Actualités" component={FeedScreen} />
-      <Tab.Screen name="A Propos" component={AboutScreen} />
+      {/* <Tab.Screen name="Actualités" component={FeedScreen} /> */}
+      {/* <Tab.Screen name="A Propos" component={AboutScreen} /> */}
     </Tab.Navigator>
   );
 };
