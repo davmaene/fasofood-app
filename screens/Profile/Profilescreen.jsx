@@ -14,6 +14,7 @@ import { map } from '../../assets/styles/Styles';
 import DialogBox from 'react-native-dialogbox';
 import { appname } from '../../assets/configs/configs';
 import * as Location from 'expo-location';
+import Toast from 'react-native-toast-message';
 
 export const ProfileScreen = ({ navigation }) => {
     const user = global && global['user'];
@@ -26,20 +27,24 @@ export const ProfileScreen = ({ navigation }) => {
         longitude: parseFloat(29.2325225)
     });
 
+    const onConfirm = async () => {
+
+    };
+
     const onSetCurrentPosition = () => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 ref.current.confirm({
                     title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Paramètres</Text>,
-                    content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >{appname} N'arrive pas à avoir accès à votre position; vous ne pouvez pas envoyer une alerte sans cette fonctionnalité activée</Text>],
+                    content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >{appname} N'arrive pas à avoir accès à votre position; </Text>],
                     ok: {
                         text: 'Authoriser',
                         style: {
                             color: Colors.primaryColor,
                             fontFamily: 'mons'
                         },
-                        callback: () => onConfirm()
+                        callback: () => onSetCurrentPosition()
                     },
                     cancel: {
                         text: 'Annuler',
@@ -66,6 +71,7 @@ export const ProfileScreen = ({ navigation }) => {
                             let { coords } = await Location.getCurrentPositionAsync({});
                             const { speed, altitude, longitude, latitude } = coords;
                             setcoords(coords);
+                            onConfirm();
                         }
                     },
                     cancel: {
