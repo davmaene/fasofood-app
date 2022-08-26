@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableHighlight, ScrollView } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Divider } from 'react-native-elements';
 import { Colors } from '../../assets/colors/Colors';
@@ -7,7 +7,7 @@ import { returnInitialOfNames } from '../../assets/const/helper.helper';
 import { Dims } from '../../assets/dimensions/Dimemensions';
 import { Footer } from '../../components/Footer/comp.footer';
 import { Title } from '../../components/Title/Title';
-import { Feather, Ionicons, AntDesign } from '@expo/vector-icons';
+import { Feather, Ionicons, AntDesign, FontAwesome, FontAwesome5, Entypo } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import MapView, { Marker } from 'react-native-maps';
 import { map } from '../../assets/styles/Styles';
@@ -15,7 +15,8 @@ import DialogBox from 'react-native-dialogbox';
 import { appname } from '../../assets/configs/configs';
 import * as Location from 'expo-location';
 import Toast from 'react-native-toast-message';
-import { onGetLocation } from '../../services/communications';
+import { onDeconnextion, onGetLocation } from '../../services/communications';
+import * as Updates from 'expo-updates';
 import { Loader } from '../../components/Loader/comp.loader';
 
 export const ProfileScreen = ({ navigation }) => {
@@ -96,6 +97,46 @@ export const ProfileScreen = ({ navigation }) => {
         })()
     };
 
+    const handDeconnexion = async () => {
+
+        onDeconnextion((er, done) => {
+            if(done){
+                refmap.current.tip({
+                    title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Paramètres</Text>,
+                    content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >Vos informations sont bien supprimées de cet appareil </Text>],
+                    btn: {
+                        text: 'Reessayer',
+                        style: {
+                            color: Colors.primaryColor,
+                            fontFamily: 'mons'
+                        },
+                        callback: () => Updates.fetchUpdateAsync()
+                    }
+                })
+            }else{
+                refmap.current.confirm({
+                    title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Paramètres</Text>,
+                    content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >Une erreur vient de se produire lors de la déconnexion </Text>],
+                    ok: {
+                        text: 'Reessayer',
+                        style: {
+                            color: Colors.primaryColor,
+                            fontFamily: 'mons'
+                        },
+                        callback: () => onde()
+                    },
+                    cancel: {
+                        text: 'Annuler',
+                        style: {
+                            color: Colors.darkColor,
+                            fontFamily: "mons-e"
+                        }
+                    },
+                })
+            }
+        })
+    }
+
     return(
         <>
             <Title navigation={undefined} title={"Profile"} subtitle={"Personalisation du profile"} Colors />
@@ -129,10 +170,13 @@ export const ProfileScreen = ({ navigation }) => {
                     </View>
                 </View>
                 {/* ------------------------------ */}
-                <View style={{ padding: 20 }}>
+                <ScrollView 
+                    style={{ padding: 20 }}
+                    contentContainerStyle={{ paddingBottom: "50%" }}
+                >
                     <View style={{ backgroundColor: Colors.pillColor }}>
-                        <TouchableHighlight
-                            style={{ flexDirection: "row", height: 40, width: "100%", padding: 6, alignContent: "center", alignItems: "center" }}
+                        {/* <TouchableHighlight
+                            style={{ flexDirection: "row", height: 40, width: "100%", padding: 6, alignContent: "center", alignItems: "center", marginBottom: 5 }}
                         >
                             <>
                                 <View style={{ width: 30, height: 30, borderRadius: 4, backgroundColor: Colors.dangerColor, justifyContent: "center", alignItems: "center", alignContent: "center" }}>
@@ -141,8 +185,67 @@ export const ProfileScreen = ({ navigation }) => {
                                 <Text style={{ paddingLeft: 10, fontFamily: "mons-b" }}>Déconnexion</Text>
                             </>
                         </TouchableHighlight>
+                        <Divider/> */}
+                        {/* <TouchableHighlight
+                            style={{ flexDirection: "row", height: 40, width: "100%", padding: 6, alignContent: "center", alignItems: "center", marginBottom: 5 }}
+                        >
+                            <>
+                                <View style={{ width: 30, height: 30, borderRadius: 4, backgroundColor: Colors.dangerColor, justifyContent: "center", alignItems: "center", alignContent: "center" }}>
+                                    <F name='mar' size={Dims.iconsize} color={Colors.whiteColor} />
+                                </View>
+                                <Text style={{ paddingLeft: 10, fontFamily: "mons-b" }}>Déconnexion</Text>
+                            </>
+                        </TouchableHighlight>
+                        <Divider/> */}
+                        <TouchableHighlight
+                            style={{ flexDirection: "row", height: 40, width: "100%", padding: 6, alignContent: "center", alignItems: "center", marginBottom: 5 }}
+                        >
+                            <>
+                                <View style={{ width: 30, height: 30, borderRadius: 4, backgroundColor: Colors.primaryColor, justifyContent: "center", alignItems: "center", alignContent: "center" }}>
+                                    <Feather name='edit' size={Dims.iconsize} color={Colors.whiteColor} />
+                                </View>
+                                <Text style={{ paddingLeft: 10, fontFamily: "mons-b" }}>Modifier les informations de mon compte</Text>
+                            </>
+                        </TouchableHighlight>
+                        <Divider/>
+                        <TouchableHighlight
+                            style={{ flexDirection: "row", height: 40, width: "100%", padding: 6, alignContent: "center", alignItems: "center", marginBottom: 5 }}
+                            onPress={() => {
+                                refmap.current.confirm({
+                                    title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Paramètres</Text>,
+                                    content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >{appname} Vous êtes sur le point de vous déconnecter de cet appareil, voulez-vous vraiement continuer</Text>],
+                                    ok: {
+                                        text: 'Continuer',
+                                        style: {
+                                            color: Colors.primaryColor,
+                                            fontFamily: 'mons'
+                                        },
+                                        callback: () => {
+                                            setisloading(true);
+                                            handDeconnexion();
+                                        }
+                                    },
+                                    cancel: {
+                                        text: 'Annuler',
+                                        style: {
+                                            color: Colors.darkColor,
+                                            fontFamily: "mons-e"
+                                        }
+                                    },
+                                })
+                            }}
+                            underlayColor={Colors.pillColor}
+                        >
+                            <>
+                                <View style={{ width: 30, height: 30, borderRadius: 4, backgroundColor: Colors.dangerColor, justifyContent: "center", alignItems: "center", alignContent: "center" }}>
+                                    <Feather name='power' size={Dims.iconsize} color={Colors.whiteColor} />
+                                </View>
+                                <Text style={{ paddingLeft: 10, fontFamily: "mons-b" }}>Déconnexion</Text>
+                            </>
+                        </TouchableHighlight>
+
                     </View>
-                </View>
+                </ScrollView>
             </View>
             <View style={{ padding: 20, alignSelf: "center", overflow: "hidden", borderTopStartRadius: Dims.borderradius, borderTopEndRadius: Dims.borderradius }}>
                 <Modal

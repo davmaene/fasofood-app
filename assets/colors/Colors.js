@@ -7,7 +7,12 @@ const whiteColor = "#FFFF"
 const darkColor = "#474747"
 const placeHolderColor= "#9C9696";
 
+const infoColor = "#43DCDE";
+const alterColor = "#9BE339";
+
 export const Colors = {
+    infoColor,
+    alterColor,
     placeHolderColor,
     primaryColor,
     secondaryColor,
