@@ -13,10 +13,12 @@ import MapView, { Marker } from 'react-native-maps';
 import { map } from '../../assets/styles/Styles';
 import DialogBox from 'react-native-dialogbox';
 import { appname } from '../../assets/configs/configs';
+import * as Location from 'expo-location';
 
 export const ProfileScreen = ({ navigation }) => {
     const user = global && global['user'];
     const [isVisible, setisVisible] = React.useState(false);
+    const [isloading, setisloading] = React.useState(false);
     const ref = React.useRef();
     const refmap = React.useRef();
     const [coords, setcoords] = React.useState({
@@ -24,7 +26,7 @@ export const ProfileScreen = ({ navigation }) => {
         longitude: parseFloat(29.2325225)
     });
 
-    const onSetCurrentPosition = async () => {
+    const onSetCurrentPosition = () => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -50,83 +52,20 @@ export const ProfileScreen = ({ navigation }) => {
               return;
             }else{
                 ref.current.confirm({
-                    title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Lancement SOS</Text>,
+                    title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Ajout de ma position</Text>,
                     content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >
-                                Vous êtes sur le point de lancer un <Text style={{ fontFamily: "mons" }}>SOS</Text>, les centres d'aide et les centres de santé seront informés et votre position sera partager avec ces derniers
+                                Vous êtes sur le point de mettre à jour votre position actuelle
                             </Text>],
                     ok: {
-                        text: 'Lancer un SOS',
+                        text: 'Ajouter ma position actuelle',
                         style: {
                             color: Colors.primaryColor,
                             fontFamily: 'mons'
                         },
-                        callback: async () => {
-                            // -----------------------------------------------------------
-                            setbefore(true);         
+                        callback: async () => {    
                             let { coords } = await Location.getCurrentPositionAsync({});
                             const { speed, altitude, longitude, latitude } = coords;
                             setcoords(coords);
-                            // console.log(coords);
-                            // -----------------------------------------------------------
-                            await onRunExternalRQST({
-                                url: "/users/user/sendsos",
-                                data: {
-                                    latitude, 
-                                    longitude, 
-                                    hospitalref: global['user']['hospitalref'], 
-                                    phone: global['user']['phone'], 
-                                    fsname: global['user']['fsname'], 
-                                    lsname: global['user']['lsname'], 
-                                    altitude, 
-                                    speed
-                                },
-                                method: "POST"
-                            }, (err, don) => {
-                                console.log(don);
-                                if(don){
-                                    setbefore(false);
-                                    switch (don['status']) {
-                                        case 200:
-                                            Toast.show({
-                                                type: 'success',
-                                                text1: 'Traitement en cours',
-                                                text2: 'Votre requête est en cours de traitement !',
-                                            });
-                                            setisloading(!isloading);
-                                            setTimeout(() => {
-                                                Animated.timing(fadeAnim, {
-                                                    toValue: 1,
-                                                    duration: 1000,
-                                                    useNativeDriver: true
-                                                }).start();
-                                                setmessage("Ne vous déplacez pas; les sécours arrivent incessement !")
-                                                setshw(true)
-                                            }, 3200);
-                                            break;
-                                        case 401:
-                                            Toast.show({
-                                                type: 'error',
-                                                text1: 'Erreur',
-                                                text2: 'Quelques paramètres manques dans la requête envoyée ',
-                                            });
-                                            break;
-                                        default:
-                                            Toast.show({
-                                                type: 'error',
-                                                text1: 'Erreur',
-                                                text2: 'Une erreur est survenue lors de l\'activation du compte !',
-                                            });
-                                            break;
-                                    }
-                                }else{
-                                    setbefore(false);
-                                    Toast.show({
-                                        type: 'error',
-                                        text1: 'Erreur',
-                                        text2: 'Une erreur est survenue lors de l\'activation du compte !',
-                                    });
-                                }
-                            })
                         }
                     },
                     cancel: {
@@ -211,14 +150,14 @@ export const ProfileScreen = ({ navigation }) => {
                                 // image={{uri: 'https://avatars.githubusercontent.com/u/50874479?s=400&u=27be3de52fb72efbaaf3656895d5c23be0a07ba7&v=4'}}
                                 coordinate={coords}
                                 title={"Vous êtes ici"}
-                                description={`${user.fsname.toUpperCase()}  ${user.lsname.toUpperCase()} | Votre position actuelle ...`}
+                                description={`Votre position actuelle ...`}
                             />
                         </MapView>
                         <View style={{ position: "absolute", width: "100%", height: "auto", zIndex: 2992782, bottom: 0 }}>
                             <TouchableHighlight 
                                 style={{ flexDirection: "row", elevation: 28, width: "90%", backgroundColor: Colors.primaryColor, alignContent: "center", justifyContent: "center", alignItems: "center", alignSelf: "center", height: 50, marginVertical: 15 }}
                                 underlayColor={Colors.primaryColor}
-
+                                onPress={onSetCurrentPosition}
                             >
                                 <>
                                     <AntDesign name="checkcircleo" size={ Dims.iconsize } color={Colors.whiteColor} />
@@ -227,11 +166,11 @@ export const ProfileScreen = ({ navigation }) => {
                             </TouchableHighlight>
                         </View>
                     </View>
-                    <DialogBox ref={refmap} isOverlayClickClose={false} />
+                    <DialogBox ref={ref} isOverlayClickClose={false} />
                 </Modal>
             </View>
             <Footer/>
-            <DialogBox ref={ref} isOverlayClickClose={false} />
+            <DialogBox ref={refmap} isOverlayClickClose={false} />
         </>
     )
 }
