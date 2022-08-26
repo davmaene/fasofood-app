@@ -105,12 +105,12 @@ export const ProfileScreen = ({ navigation }) => {
                     title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Paramètres</Text>,
                     content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >Vos informations sont bien supprimées de cet appareil </Text>],
                     btn: {
-                        text: 'Reessayer',
+                        text: 'D\'accord',
                         style: {
                             color: Colors.primaryColor,
                             fontFamily: 'mons'
                         },
-                        callback: () => Updates.fetchUpdateAsync()
+                        callback: () => Updates.reloadAsync()
                     }
                 })
             }else{
