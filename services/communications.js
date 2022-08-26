@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { endpoint } from '../assets/configs/configs';
+import { endpoint, locationURL } from '../assets/configs/configs';
 import { db } from './dbconnect/dbconnect';
 
 import { OnInitialize } from './tables/tables';
@@ -66,6 +66,25 @@ export const onRunRawQRY = async ({ table, sql, options }, cb) => {
             });
     } catch (error) {
         return cb(error, undefined)
+    }
+};
+
+export const onGetLocation = async (cb) => {
+    try {
+        axios({
+            headers,
+            timeout,
+            method: "GET",
+            url: locationURL
+        })
+        .then(res => {
+            cb(undefined, res['data'])
+        })
+        .catch(err => {
+            cb( undefined, err)
+        })
+    } catch (error) {
+        cb(undefined, error)
     }
 };
 

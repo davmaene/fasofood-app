@@ -15,6 +15,8 @@ import DialogBox from 'react-native-dialogbox';
 import { appname } from '../../assets/configs/configs';
 import * as Location from 'expo-location';
 import Toast from 'react-native-toast-message';
+import { onGetLocation } from '../../services/communications';
+import { Loader } from '../../components/Loader/comp.loader';
 
 export const ProfileScreen = ({ navigation }) => {
     const user = global && global['user'];
@@ -56,6 +58,7 @@ export const ProfileScreen = ({ navigation }) => {
                 })
               return;
             }else{
+                setisloading(true);
                 ref.current.confirm({
                     title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Ajout de ma position</Text>,
                     content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >
@@ -70,8 +73,15 @@ export const ProfileScreen = ({ navigation }) => {
                         callback: async () => {    
                             let { coords } = await Location.getCurrentPositionAsync({});
                             const { speed, altitude, longitude, latitude } = coords;
-                            setcoords(coords);
-                            onConfirm();
+                            console.log(" My pos => ", coords);
+                            onGetLocation((err, done) => {
+                                if(done){
+                                    setisloading(false);
+                                    console.log(" Date is => ", done);
+                                }else{
+                                    setisloading(false);
+                                }
+                            })
                         }
                     },
                     cancel: {
@@ -119,8 +129,19 @@ export const ProfileScreen = ({ navigation }) => {
                     </View>
                 </View>
                 {/* ------------------------------ */}
-                <View>
-
+                <View style={{ padding: 20 }}>
+                    <View style={{ backgroundColor: Colors.pillColor }}>
+                        <TouchableHighlight
+                            style={{ flexDirection: "row", height: 40, width: "100%", padding: 6, alignContent: "center", alignItems: "center" }}
+                        >
+                            <>
+                                <View style={{ width: 30, height: 30, borderRadius: 4, backgroundColor: Colors.dangerColor, justifyContent: "center", alignItems: "center", alignContent: "center" }}>
+                                    <Feather name='power' size={Dims.iconsize} color={Colors.whiteColor} />
+                                </View>
+                                <Text style={{ paddingLeft: 10, fontFamily: "mons-b" }}>Déconnexion</Text>
+                            </>
+                        </TouchableHighlight>
+                    </View>
                 </View>
             </View>
             <View style={{ padding: 20, alignSelf: "center", overflow: "hidden", borderTopStartRadius: Dims.borderradius, borderTopEndRadius: Dims.borderradius }}>
@@ -165,10 +186,16 @@ export const ProfileScreen = ({ navigation }) => {
                                 underlayColor={Colors.primaryColor}
                                 onPress={onSetCurrentPosition}
                             >
-                                <>
-                                    <AntDesign name="checkcircleo" size={ Dims.iconsize } color={Colors.whiteColor} />
-                                    <Text style={{ paddingLeft: 10, fontFamily: "mons", color: Colors.whiteColor }}>Prendre ma position actuelle</Text>
-                                </>
+                                {
+                                    isloading
+                                    ?
+                                        <Loader/>
+                                    :
+                                    <>
+                                        <AntDesign name="checkcircleo" size={ Dims.iconsize } color={Colors.whiteColor} />
+                                        <Text style={{ paddingLeft: 10, fontFamily: "mons", color: Colors.whiteColor }}>Prendre ma position actuelle</Text>
+                                    </>
+                                }
                             </TouchableHighlight>
                         </View>
                     </View>
