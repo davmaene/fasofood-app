@@ -7,18 +7,140 @@ import { returnInitialOfNames } from '../../assets/const/helper.helper';
 import { Dims } from '../../assets/dimensions/Dimemensions';
 import { Footer } from '../../components/Footer/comp.footer';
 import { Title } from '../../components/Title/Title';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons, AntDesign } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import MapView, { Marker } from 'react-native-maps';
 import { map } from '../../assets/styles/Styles';
+import DialogBox from 'react-native-dialogbox';
+import { appname } from '../../assets/configs/configs';
 
 export const ProfileScreen = ({ navigation }) => {
     const user = global && global['user'];
     const [isVisible, setisVisible] = React.useState(false);
+    const ref = React.useRef();
+    const refmap = React.useRef();
     const [coords, setcoords] = React.useState({
         latitude: parseFloat(-1.6734344),
         longitude: parseFloat(29.2325225)
     });
+
+    const onSetCurrentPosition = async () => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                ref.current.confirm({
+                    title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Paramètres</Text>,
+                    content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >{appname} N'arrive pas à avoir accès à votre position; vous ne pouvez pas envoyer une alerte sans cette fonctionnalité activée</Text>],
+                    ok: {
+                        text: 'Authoriser',
+                        style: {
+                            color: Colors.primaryColor,
+                            fontFamily: 'mons'
+                        },
+                        callback: () => onConfirm()
+                    },
+                    cancel: {
+                        text: 'Annuler',
+                        style: {
+                            color: Colors.darkColor,
+                            fontFamily: "mons-e"
+                        }
+                    },
+                })
+              return;
+            }else{
+                ref.current.confirm({
+                    title: <Text style={{ fontFamily: "mons", fontSize: Dims.titletextsize }}>Lancement SOS</Text>,
+                    content: [<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, marginHorizontal: 25 }} >
+                                Vous êtes sur le point de lancer un <Text style={{ fontFamily: "mons" }}>SOS</Text>, les centres d'aide et les centres de santé seront informés et votre position sera partager avec ces derniers
+                            </Text>],
+                    ok: {
+                        text: 'Lancer un SOS',
+                        style: {
+                            color: Colors.primaryColor,
+                            fontFamily: 'mons'
+                        },
+                        callback: async () => {
+                            // -----------------------------------------------------------
+                            setbefore(true);         
+                            let { coords } = await Location.getCurrentPositionAsync({});
+                            const { speed, altitude, longitude, latitude } = coords;
+                            setcoords(coords);
+                            // console.log(coords);
+                            // -----------------------------------------------------------
+                            await onRunExternalRQST({
+                                url: "/users/user/sendsos",
+                                data: {
+                                    latitude, 
+                                    longitude, 
+                                    hospitalref: global['user']['hospitalref'], 
+                                    phone: global['user']['phone'], 
+                                    fsname: global['user']['fsname'], 
+                                    lsname: global['user']['lsname'], 
+                                    altitude, 
+                                    speed
+                                },
+                                method: "POST"
+                            }, (err, don) => {
+                                console.log(don);
+                                if(don){
+                                    setbefore(false);
+                                    switch (don['status']) {
+                                        case 200:
+                                            Toast.show({
+                                                type: 'success',
+                                                text1: 'Traitement en cours',
+                                                text2: 'Votre requête est en cours de traitement !',
+                                            });
+                                            setisloading(!isloading);
+                                            setTimeout(() => {
+                                                Animated.timing(fadeAnim, {
+                                                    toValue: 1,
+                                                    duration: 1000,
+                                                    useNativeDriver: true
+                                                }).start();
+                                                setmessage("Ne vous déplacez pas; les sécours arrivent incessement !")
+                                                setshw(true)
+                                            }, 3200);
+                                            break;
+                                        case 401:
+                                            Toast.show({
+                                                type: 'error',
+                                                text1: 'Erreur',
+                                                text2: 'Quelques paramètres manques dans la requête envoyée ',
+                                            });
+                                            break;
+                                        default:
+                                            Toast.show({
+                                                type: 'error',
+                                                text1: 'Erreur',
+                                                text2: 'Une erreur est survenue lors de l\'activation du compte !',
+                                            });
+                                            break;
+                                    }
+                                }else{
+                                    setbefore(false);
+                                    Toast.show({
+                                        type: 'error',
+                                        text1: 'Erreur',
+                                        text2: 'Une erreur est survenue lors de l\'activation du compte !',
+                                    });
+                                }
+                            })
+                        }
+                    },
+                    cancel: {
+                        text: 'Annuler',
+                        style: {
+                            color: Colors.darkColor,
+                            fontFamily: "mons-e"
+                        }
+                    },
+                })
+            }
+        })()
+    };
+
     return(
         <>
             <Title navigation={undefined} title={"Profile"} subtitle={"Personalisation du profile"} Colors />
@@ -56,15 +178,21 @@ export const ProfileScreen = ({ navigation }) => {
 
                 </View>
             </View>
-            <View style={{ backgroundColor: "lime", padding: 20, alignSelf: "center" }}>
+            <View style={{ padding: 20, alignSelf: "center", overflow: "hidden", borderTopStartRadius: Dims.borderradius, borderTopEndRadius: Dims.borderradius }}>
                 <Modal
-                    style={{ position: "absolute", bottom: -20, height: 500, overflow: "hidden", backgroundColor: Colors.whiteColor, alignSelf: "center" }}
+                    style={{ position: "absolute", bottom: -20, height: 500, overflow: "hidden", backgroundColor: Colors.whiteColor, alignSelf: "center", borderTopStartRadius: Dims.borderradius - 6, borderTopEndRadius: Dims.borderradius - 6 }}
                     isVisible={isVisible}
                     onBackButtonPress={() => { setisVisible(false) }}
                     onBackdropPress={() => { setisVisible(false) }}
                     onDismiss={() => setisVisible(false)}
                 >
-                    <View style={[ map, { alignSelf: "center", overflow: "hidden" } ]}>
+                    <View style={[ map, { alignSelf: "center" } ]}>
+                        <View style={{ position: "absolute", width: "100%", height: 75, backgroundColor: Colors.pillColor, zIndex: 2992782, top: 0, elevation: 28 }}>
+                            <View style={{ flexDirection: "column", alignContent: "center", justifyContent: "center", alignItems: "center", alignSelf: "center", height: 75 }}>
+                                <Text style={{ fontFamily: "mons-b", fontSize: Dims.bigtitletextsize - 5 }}>Position actuelle</Text>
+                                <Text style={{ fontFamily: "mons-e" }}>Customizer votre position actuelle</Text>
+                            </View>
+                        </View>
                         <MapView 
                             // ref={refmap}
                             region={
@@ -86,10 +214,24 @@ export const ProfileScreen = ({ navigation }) => {
                                 description={`${user.fsname.toUpperCase()}  ${user.lsname.toUpperCase()} | Votre position actuelle ...`}
                             />
                         </MapView>
+                        <View style={{ position: "absolute", width: "100%", height: "auto", zIndex: 2992782, bottom: 0 }}>
+                            <TouchableHighlight 
+                                style={{ flexDirection: "row", elevation: 28, width: "90%", backgroundColor: Colors.primaryColor, alignContent: "center", justifyContent: "center", alignItems: "center", alignSelf: "center", height: 50, marginVertical: 15 }}
+                                underlayColor={Colors.primaryColor}
+
+                            >
+                                <>
+                                    <AntDesign name="checkcircleo" size={ Dims.iconsize } color={Colors.whiteColor} />
+                                    <Text style={{ paddingLeft: 10, fontFamily: "mons", color: Colors.whiteColor }}>Prendre ma position actuelle</Text>
+                                </>
+                            </TouchableHighlight>
+                        </View>
                     </View>
+                    <DialogBox ref={refmap} isOverlayClickClose={false} />
                 </Modal>
             </View>
             <Footer/>
+            <DialogBox ref={ref} isOverlayClickClose={false} />
         </>
     )
 }

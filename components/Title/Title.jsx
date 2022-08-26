@@ -3,7 +3,7 @@ import { Appbar,  Button, Menu, Divider, Provider } from 'react-native-paper';
 import { Platform, Text, View } from 'react-native';
 import { Colors } from '../../assets/colors/Colors';
 import { Dims } from '../../assets/dimensions/Dimemensions';
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { onRunRemoveQRY } from '../../services/communications';
 import * as  Updates from 'expo-updates';
 import DialogBox from 'react-native-dialogbox';
@@ -54,9 +54,9 @@ export const Title = ({ title, subtitle, action, navigation }) => {
                     <></>
                 }
                 <Appbar.Content 
-                    title={<Text style={{ fontFamily: "mons", fontSize: Dims.subtitletextsize }}>{title}</Text>} 
-                    subtitle={<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize }}>{subtitle}</Text>} />
-                <Appbar.Action icon={MORE_ICON} onPress={() => openMenu()} />
+                    title={<Text style={{ fontFamily: "mons", fontSize: Dims.subtitletextsize, color: Colors.pillColor }}>{title}</Text>} 
+                    subtitle={<Text style={{ fontFamily: "mons-e", fontSize: Dims.subtitletextsize, color: Colors.pillColor }}>{subtitle}</Text>} />
+                <Appbar.Action icon={MORE_ICON} onPress={() => openMenu()} color={Colors.whiteColor} />
                 {/* <Appbar.Header>
                 <Provider>
                     <Menu
