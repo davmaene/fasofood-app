@@ -56,6 +56,13 @@ export const buttons = StyleSheet.create({
     borderTopLeftRadius: Dims.borderradius,
 });
 
+export const map = StyleSheet.create({
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+})
+
 export const button = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',

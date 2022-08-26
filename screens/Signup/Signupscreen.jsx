@@ -386,33 +386,34 @@ export const SignupScreen = ({ navigation, route }) => {
                             </View>
                         </View>
                         <Modal
-                isVisible={isVisible}
-                onBackButtonPress={() => { setisVisible(false) }}
-                onBackdropPress={() => { setisVisible(false) }}
-                style={[modal, { position: "absolute", bottom: 0, width: "100%", backgroundColor: Colors.whiteColor, borderTopRightRadius: Dims.borderradius, borderTopStartRadius: Dims.borderradius }]}>
-                <SafeAreaView style={[button, { paddingVertical: 15 }]}>
-                    <View style={{ width: "90%", flexDirection: "row", justifyContent: "space-between", alignSelf: "center" }}>
-                        <TouchableHighlight 
-                            underlayColor={Colors.primaryColor} 
-                            style={[button, { paddingVertical: 10, borderRadius: Dims.borderradius, backgroundColor: Colors.pillColor, width: "25%" }]} onPress={onImageLibraryPress}
+                            isVisible={isVisible}
+                            onBackButtonPress={() => { setisVisible(false) }}
+                            onBackdropPress={() => { setisVisible(false) }}
+                            style={[modal, { position: "absolute", bottom: 0, width: "100%", backgroundColor: Colors.whiteColor, borderTopRightRadius: Dims.borderradius, borderTopStartRadius: Dims.borderradius }]}
                         >
-                            <>
-                                <Ionicons name="images" size={ Dims.iconsize } color={ Colors.primaryColor } />
-                                <Text style={{ fontFamily: "mons", color: Colors.primaryColor }}>Galleries</Text>
-                            </>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            underlayColor={Colors.primaryColor} 
-                            style={[button, { paddingVertical: 10, borderRadius: Dims.borderradius, backgroundColor: Colors.pillColor, width: "25%" }]} onPress={onCameraPress}
-                        >
-                            <>
-                                <Ionicons name="camera" size={ Dims.iconsize } color={ Colors.primaryColor } />
-                                <Text style={{ fontFamily: "mons", color: Colors.primaryColor }}>Camera</Text>
-                            </>
-                        </TouchableHighlight>
-                    </View>
-                </SafeAreaView>
-            </Modal>
+                            <SafeAreaView style={[button, { paddingVertical: 15 }]}>
+                                <View style={{ width: "90%", flexDirection: "row", justifyContent: "space-between", alignSelf: "center" }}>
+                                    <TouchableHighlight 
+                                        underlayColor={Colors.primaryColor} 
+                                        style={[button, { paddingVertical: 10, borderRadius: Dims.borderradius, backgroundColor: Colors.pillColor, width: "25%" }]} onPress={onImageLibraryPress}
+                                    >
+                                        <>
+                                            <Ionicons name="images" size={ Dims.iconsize } color={ Colors.primaryColor } />
+                                            <Text style={{ fontFamily: "mons", color: Colors.primaryColor }}>Galleries</Text>
+                                        </>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight
+                                        underlayColor={Colors.primaryColor} 
+                                        style={[button, { paddingVertical: 10, borderRadius: Dims.borderradius, backgroundColor: Colors.pillColor, width: "25%" }]} onPress={onCameraPress}
+                                    >
+                                        <>
+                                            <Ionicons name="camera" size={ Dims.iconsize } color={ Colors.primaryColor } />
+                                            <Text style={{ fontFamily: "mons", color: Colors.primaryColor }}>Camera</Text>
+                                        </>
+                                    </TouchableHighlight>
+                                </View>
+                            </SafeAreaView>
+                        </Modal>
                     </View>
                     <Footer/>
                 </ScrollView>
