@@ -21,7 +21,7 @@ export const Footer = () => {
         {
         shown 
         ? 
-            <View style={{position: "absolute", bottom: "0%", width: "100%", backgroundColor: Colors.whiteColor, paddingVertical: 10, alignItems: "center", alignSelf: "center"}}>
+            <View style={{position: "absolute", bottom: "0%", width: "100%", backgroundColor: Colors.whiteColor, paddingVertical: 20, alignItems: "center", alignSelf: "center"}}>
                 <Text style={{ fontFamily: "mons-b", fontSize: 10, textAlign: "center" }}>&copy; {appname} | {appname} {new Date().getFullYear()} </Text>
             </View> 
         :
