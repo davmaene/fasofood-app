@@ -126,7 +126,7 @@ export const onRunRetrieveQRY = async ({ table, limit }, cb) => {
 };
 
 export const onRunExternalRQST = async ({ url, data, method }, cb) => {
-
+    console.log(" URL => ", url);
     try {
         await axios({
             timeout,

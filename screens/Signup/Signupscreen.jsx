@@ -123,6 +123,7 @@ export const SignupScreen = ({ navigation, route }) => {
                                         data,
                                         url: `/auth/create`
                                     }, (err, done) => {
+                                        console.log(" Done response => ", done);
                                         if(done){
                                             setisloading(false);
                                             switch (done && done['status']) {
