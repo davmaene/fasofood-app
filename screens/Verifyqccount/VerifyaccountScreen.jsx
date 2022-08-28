@@ -30,6 +30,7 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
     const [c, setc] = React.useState(code)
     const [u, setu] = React.useState(user)
     let [tries, settries] = React.useState(0);
+    const [onresed, setonresed] = React.useState(false);
 
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -53,7 +54,7 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
                     const u = user;
                     const __ = u && u['username'];
                     const fs = __.substring(0, __.lastIndexOf(" "));
-                    const ls = __.substring(__.lastIndexOf(" "));
+                    const ls = __.substring(__.lastIndexOf(" ") + 1);
 
                     onRunInsertQRY({
                         table: "__tbl_users",
@@ -61,8 +62,10 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
                         dot: "?, ?, ?, ?, ?, ?",
                         values: [`${fs}`, `${ls}`, `${u['phone']}`, `${u['email']}`, `${new Date().toLocaleString()}`, `${u['role']}`]
                     }, (err, insert) => {
-                        if(insert) navigation.replace("tabs");
-                        else{
+                        if(insert){
+                            global.user = u;
+                            navigation.replace("tabs");
+                        }else{
                             setisloading(false);
                             Toast.show({
                                 type: 'error',
@@ -98,7 +101,7 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
     const onValueFulFil = () => {
         if(value.length === CELL_COUNT){
             setcanverify(true);
-            setisloading(true)
+            setisloading(true);
             onVerify();
         }
     };
@@ -109,16 +112,18 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
         const id = u && u['_id'] ? u['_id'].toString().trim() : "";
         await onRunExternalRQST({
             method: "POST",
-            url: '/auth/resend-verify-email/' + id,
+            url: `/auth/resend-verify-email/${id}`,
             data: {}
         }, (err, done) => {
-            console.log(" Response is => ", done);
+            // console.log(" Response is => ", done);
             if(done){
                 setcanverify(true);
                 setisloading(false);
                 switch (done['status']) {
                     case 201:
                         // setc(done && done['data']['code']);
+                        global.user = u;
+                        setonresed(true);
                         Toast.show({
                             type: 'success',
                             text1: 'Code envoyé',
@@ -179,6 +184,18 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor }}>{u && u['phone']}</Text> et à l'adresse 
                                 <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor, paddingHorizontal: 3 }}>&nbsp;{u && u['email']}</Text>
                             </Text>
+                            {onresed ?
+                            (
+                                <>
+                                    <Divider style={{ marginVertical: 10 }} />
+                                    <Text style={{ fontFamily: "mons-e", textAlign: "center" }}>Tachez de vérifier votre boite mail, <Text style={{ fontFamily: "mons-b" }} > vérifiez aussi la liste de vos spams</Text> </Text>
+                                </>
+                            )
+                            :
+                            (
+                                <></>
+                            )
+                            }
                         </View>
                         <View style={{ width: "85%", alignSelf: "center", marginTop: 5 }}>
                             <View style={{width: "100%", height: 75, flexDirection: "column"}}>

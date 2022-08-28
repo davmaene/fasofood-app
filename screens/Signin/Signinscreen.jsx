@@ -43,7 +43,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                     const u = done && done['data']['user'];
                                     const __ = u && u['username'];
                                     const fs = __.substring(0, __.lastIndexOf(" "));
-                                    const ls = __.substring(__.lastIndexOf(" "));
+                                    const ls = __.substring(__.lastIndexOf(" ") + 1);
 
                                     onRunInsertQRY({
                                         table: "__tbl_users",
@@ -51,9 +51,10 @@ export const SigninScreen = ({ navigation, route }) => {
                                         dot: "?, ?, ?, ?, ?, ?",
                                         values: [`${fs}`, `${ls}`, `${u['phone']}`, `${u['email']}`, `${new Date().toLocaleString()}`, `${u['role']}`]
                                     }, (err, insert) => {
-                                        console.log(err);
-                                        if(insert) navigation.replace("tabs");
-                                        else{
+                                        if(insert) {
+                                            global.user = u;
+                                            navigation.replace("tabs");
+                                        }else{
                                             setisloading(false);
                                             Toast.show({
                                                 type: 'error',
@@ -151,7 +152,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: "mons-b", paddingLeft: 10, color: Colors.primaryColor }}>Adresse email</Text>
                                 <View style={[ inputGroup.container, { flexDirection: "row-reverse" } ]}>
                                     <View style={{ width: "80%", justifyContent: "center", alignContent: "center", alignItems: "center", flexDirection: "row" }}>
-                                        <TextInput placeholder='me@example.fa' maxLength={50} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%" }]} />
+                                        <TextInput placeholder='me@example.fa' maxLength={50} keyboardType={"email-address"} onChangeText={(t) => setnum(t)} style={[ inputGroup.input, { fontFamily: "mons", width: "100%", paddingRight: 20 }]} />
                                     </View>
                                     <View style={[ inputGroup.iconcontainer, { backgroundColor: Colors.primaryColor }]}>
                                         <MaterialIcons name="email" size={Dims.iconsize} color={ Colors.whiteColor } />
@@ -164,7 +165,7 @@ export const SigninScreen = ({ navigation, route }) => {
                                 <View style={[ inputGroup.container, { flexDirection: "row-reverse" }]}>
                                     <TouchableHighlight
                                         underlayColor={Colors.whiteColor}
-                                        onPress={() => seteye(!eye)} 
+                                        onPress={() => seteye(!eye)}
                                         style={[ inputGroup.iconcontainer, { backgroundColor: Colors.pillColor }]}
                                     >
                                         <Ionicons name={eye ? "eye-off" : "eye"} size={ Dims.iconsize } color={ Colors.primaryColor } />
