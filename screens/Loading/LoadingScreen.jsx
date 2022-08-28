@@ -28,7 +28,10 @@ export const LoadingSceen = ({ navigation }) => {
         if(done && done['length'] > 0){
           global.user = done[0];
           navigation.replace("tabs");
-        }else navigation.replace("signin");
+        }else{
+          navigation.replace("tabs");
+          // navigation.replace("signin");
+        }
       });
       setappready(true);
     };

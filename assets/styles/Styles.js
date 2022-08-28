@@ -74,7 +74,15 @@ export const modal = StyleSheet.create({
     margin: 0,
 });
 
-export const btn = StyleSheet.create({ width: "100%", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" })
+export const btn = StyleSheet.create({ 
+    width: "100%", 
+    backgroundColor: Colors.primaryColor, 
+    height: 46, 
+    borderRadius: Dims.borderradius, 
+    justifyContent: "center", 
+    alignContent: "center", 
+    alignItems: "center" 
+});
 
 export const cel = StyleSheet.create({ 
     color: Colors.primaryColor, 

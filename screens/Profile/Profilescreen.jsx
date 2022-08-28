@@ -25,6 +25,7 @@ export const ProfileScreen = ({ navigation }) => {
     const [isloading, setisloading] = React.useState(false);
     const ref = React.useRef();
     const refmap = React.useRef();
+    const [isloggedin, setisloggedin] = React.useState(false);
     const [coords, setcoords] = React.useState({
         latitude: parseFloat(-1.6734344),
         longitude: parseFloat(29.2325225)
@@ -137,10 +138,16 @@ export const ProfileScreen = ({ navigation }) => {
         })
     }
 
+    React.useEffect(() => {
+        if(global.user) setisloggedin(true);
+        else setisloggedin(false);
+    }, [])
+
     return(
         <>
             <Title navigation={undefined} title={"Profile"} subtitle={"Personalisation du profile"} Colors />
-            <View style={{ backgroundColor: Colors.whiteColor, flex: 1 }}>
+            {/* if user is logged in */}
+            <View style={{ backgroundColor: Colors.whiteColor, flex: 1, display: isloggedin ? "flex" : "none" }}>
                 <View style={{ width: "100%", padding: 25 }}>
                     <View style={{ alignSelf: "center" }} >
                         <Avatar
@@ -247,6 +254,50 @@ export const ProfileScreen = ({ navigation }) => {
                     </View>
                 </ScrollView>
             </View>
+            <View style={{ flex: 1, backgroundColor: Colors.whiteColor, display: isloggedin ? "none" : "flex"  }}>
+                <View style={{ paddingHorizontal: 20, alignSelf: "center", marginTop: 20, width: "100%" }}>
+                    <View style={{ alignSelf: "center", flexDirection: "column", width: "100%" }}>
+                        <View style={{ alignSelf: "center" }}>
+                            <AntDesign name="user" size={Dims.iconsize * 5.5} color="black" />
+                        </View>
+                        <View style={{ marginTop: 20, marginBottom: 30 }}>
+                            <Text style={{ fontFamily: "mons-e", textAlign: "center" }}>Connectez-vous avec votre numéro de téléphone ou votre adresse mail. Bénéficiew de toutes les fonctionnalité de <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor }}>{appname}</Text> </Text>
+                        </View>
+                    </View>
+                    <Divider />
+                </View>
+
+                <View style={{  }} >
+                    <View style={{ width: "85%", alignSelf: "center" }}>
+                        <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 25 }}>
+                            <TouchableHighlight 
+                                onPress={() => navigation.navigate("signin")}
+                                style={{ width: "100%", backgroundColor: Colors.primaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
+                                <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Connexion à mon compte</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                    <View style={{ width: "85%", alignSelf: "center" }}>
+                        <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 2 }}>
+                            <TouchableHighlight 
+                                onPress={() => navigation.navigate("signup")}
+                                style={{ width: "100%", backgroundColor: Colors.secondaryColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
+                                <Text style={{ color: Colors.whiteColor, fontFamily: "mons" }}>Créer un compte</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                    <View style={{ width: "85%", alignSelf: "center" }}>
+                        <View style={{ width: "100%", height: 65, flexDirection: "column", marginTop: 2 }}>
+                            <TouchableHighlight 
+                                underlayColor={Colors.secondaryColor}
+                                onPress={() => navigation.navigate("recoverpassword")}
+                                style={{ width: "100%", backgroundColor: Colors.pillColor, height: 46, borderRadius: Dims.borderradius, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
+                                <Text style={{ color: Colors.primaryColor, fontFamily: "mons-b" }}>Mot de passe oublié ?</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                </View>
+            </View>
             <View style={{ padding: 20, alignSelf: "center", overflow: "hidden", borderTopStartRadius: Dims.borderradius, borderTopEndRadius: Dims.borderradius }}>
                 <Modal
                     style={{ position: "absolute", bottom: -20, height: 500, overflow: "hidden", backgroundColor: Colors.whiteColor, alignSelf: "center", borderTopStartRadius: Dims.borderradius - 6, borderTopEndRadius: Dims.borderradius - 6 }}
@@ -305,6 +356,7 @@ export const ProfileScreen = ({ navigation }) => {
                     <DialogBox ref={ref} isOverlayClickClose={false} />
                 </Modal>
             </View>
+            {/* else user is not loggedin */}
             <Footer/>
             <DialogBox ref={refmap} isOverlayClickClose={false} />
         </>
