@@ -175,7 +175,7 @@ export const VerifyaccountScreen = ({ navigation, route }) => {
                     <View style={{ borderTopEndRadius: Dims.bigradius, borderTopStartRadius: Dims.bigradius, backgroundColor: Colors.whiteColor, height: Dims.height, marginTop: Dims.smallradius }}>
                         <View style={{ width: "85%", alignSelf: "center", marginTop: Dims.bigradius }}>
                             <Text style={{fontFamily: "mons-e", textAlign: "center"}}>
-                                Nous venons de detecter que votre compte n'est pas encore activé; nous venons d'envoyer un code de vérification au numéro de téléphone&nbsp;
+                                Nous venons de detecter que votre compte n'est pas encore activé; un code de vérification a été envoyer au numéro de téléphone&nbsp;
                                 <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor }}>{u && u['phone']}</Text> et à l'adresse 
                                 <Text style={{ fontFamily: "mons-b", color: Colors.primaryColor, paddingHorizontal: 3 }}>&nbsp;{u && u['email']}</Text>
                             </Text>
