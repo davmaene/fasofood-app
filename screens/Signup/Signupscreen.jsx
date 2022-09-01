@@ -11,6 +11,7 @@ import { onRunExternalRQST } from '../../services/communications';
 import Toast from 'react-native-toast-message';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
+import { passwordValidator } from '../../assets/const/helper.helper';
 import PhoneInput from "react-native-phone-number-input";
 import { Loader } from '../../components/Loader/comp.loader';
 
@@ -95,13 +96,13 @@ export const SignupScreen = ({ navigation, route }) => {
     };
 
     const onSubmit = async () => {
-        setoutput("");
+        setoutput("");        
         try {
             if(fs.length > 0){
                 if(ls.length > 0){
                     if(email.length > 0){
                         if(value.length > 5 && formattedValue.length > 0){
-                            if(pwd.length >= 6){
+                            if(passwordValidator({ chaine: pwd })){
                                 if(pwd === pwdr){
 
                                     setisloading(true);
@@ -178,9 +179,9 @@ export const SignupScreen = ({ navigation, route }) => {
                                 Toast.show({
                                     type: 'error',
                                     text1: 'Erreur',
-                                    text2: 'Le mot de passe doit avoir 6 catactères au minimum !',
+                                    text2: 'Le mot de passe doit avoir 8 catactères au minimum !',
                                 }); 
-                                setoutput("Le mot de passe doit avoir 6 catactères au minimum !")
+                                setoutput("Le mot de passe doit avoir 8 catactères au minimum et contenir au minimum un caractère spécial, un Chiffre ex: @$!%*#?&^_-!")
                             }
                         }else{
                             Toast.show({

@@ -10,3 +10,8 @@ export const returnInitialOfNames = ({ fsname, lsname }) => {
         return "--"
     }
 };
+
+export const passwordValidator = ({ chaine }) => {
+    if((/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/).test(chaine.toString())) return true;
+    else return false;
+};
